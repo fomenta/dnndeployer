@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 
+# dnn extension build
+**/install/*
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

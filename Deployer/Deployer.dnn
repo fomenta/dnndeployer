@@ -1,0 +1,67 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Deployer" type="Library" version="01.07.150327">
+      <friendlyName>Deployer</friendlyName>
+      <description>Deployer - Build DotNetNuke Integration</description>
+      <iconFile>Images/icon_extensions.gif</iconFile>
+      <owner>
+        <name>IT Department</name>
+        <organization>Deploying Technologies</organization>
+        <url></url>
+        <email></email>
+      </owner>
+      <license/>
+      <releaseNotes>
+        <![CDATA[<h1>Release Notes for DNN Deployer</h1>
+<h2>Version 1.0</h2>
+<ul>
+  <li>Allows modules being published via a REST web service in order to integrate with TFS Build Agent</li>
+</ul>
+
+<h2>Version 1.1.1</h2>
+<ul>
+  <li>Added a secure version of the REST web service implementation to install module (i.e. Requires Host Authentication)</li>
+</ul>
+
+<h2>Version 1.2</h2>
+<ul>
+  <li>Added a controller to import pages</li>
+</ul>
+<h2>Version 1.3</h2>
+<ul>
+  <li>Added a controller to import portals</li>
+</ul>
+<h2>Version 1.4</h2>
+<ul>
+  <li>Extended the controller to import pages</li>
+</ul>
+<h2>Version 1.5</h2>
+<ul>
+  <li>Extended the controller to modify pages, add modules to pages, remove modules from pages</li>
+</ul>
+]]>
+      </releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">07.00.02</dependency>
+      </dependencies>
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath></basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <basePath>bin</basePath>
+            <assembly>
+              <name>Deployer.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

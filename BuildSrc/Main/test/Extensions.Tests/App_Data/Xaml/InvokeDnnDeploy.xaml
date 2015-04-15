@@ -1,0 +1,92 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Build.Extensions.Tests.App_Data.InvokeDnnDeploy"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:bea="clr-namespace:Build.Extensions.Activities;assembly=Build.Extensions"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="TargetDnnRootUrl" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="ModuleFilePath" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>VB</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Build.Extensions.Tests.App_Data.InvokeDnnDeploy_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.Activities.Extensions</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities.UnitTesting</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Microsoft.TeamFoundation.Build.Client</AssemblyReference>
+      <AssemblyReference>Microsoft.TeamFoundation.Build.Workflow</AssemblyReference>
+      <AssemblyReference>Microsoft.TeamFoundation.Client</AssemblyReference>
+      <AssemblyReference>Microsoft.TeamFoundation.VersionControl.Client</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>RestSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Windows.Forms</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.AWS</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.Azure</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.IIS7</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.ILMerge</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.LabManagement</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.StyleCop</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.VirtualPC</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.VisualStudio</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.TfsUtilities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.QualityTools.UnitTestFramework</AssemblyReference>
+      <AssemblyReference>Build.Extensions</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Build.Extensions.Tests</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Install DotNetNuke Modules" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <bea:DnnDeployModuleUnsecuredActivity IgnoreExceptions="{x:Null}" TreatWarningsAsErrors="{x:Null}" DisplayName="Install Module" FailBuildOnError="True" sap2010:WorkflowViewState.IdRef="DnnDeployModuleUnsecuredActivity_1" LogExceptionStack="True" ModuleFilePath="[ModuleFilePath]" TargetDnnRootUrl="[TargetDnnRootUrl]" />
+    <sads:DebugSymbol.Symbol>d1pDOlxURlNcRmFjdHVyZVxNb2R1bG9zXEJ1aWxkXE1haW5cdGVzdFxFeHRlbnNpb25zLlRlc3RzXEFwcF9EYXRhXFhhbWxcSW52b2tlRG5uRGVwbG95LnhhbWwGSwNODgIBAUwFTKcCAgECTIcBTI0BAgEITJACTKQCAgEGTNYBTNwBAgEFTOwBTP4BAgED</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="DnnDeployModuleUnsecuredActivity_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,146">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Build.Extensions.Tests.App_Data.InvokeDnnDeploy_1" sap:VirtualizedContainerService.HintSize="262,226" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

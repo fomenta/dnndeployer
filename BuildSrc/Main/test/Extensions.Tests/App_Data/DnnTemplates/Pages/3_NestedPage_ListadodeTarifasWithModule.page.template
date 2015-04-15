@@ -1,0 +1,164 @@
+<portal version="3.0">
+	<description>Listado de Tarifas with User Import/Export Module included on it.</description>
+	<tabs>
+		<tab>
+			<content>Listado de Tarifas</content>
+			<contentKey />
+			<containersrc />
+			<cultureCode />
+			<description />
+			<disabled>false</disabled>
+			<enddate>0001-01-01T00:00:00</enddate>
+			<issecure>false</issecure>
+			<visible>true</visible>
+			<keywords />
+			<pageheadtext />
+			<permanentredirect>false</permanentredirect>
+			<refreshinterval>-1</refreshinterval>
+			<sitemappriority>0.5</sitemappriority>
+			<skinsrc />
+			<startdate>0001-01-01T00:00:00</startdate>
+			<name>Listado de Tarifas</name>
+			<title />
+			<url type="Normal" />
+			<tabpermissions>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>EDIT</permissionkey>
+					<allowaccess>false</allowaccess>
+					<rolename>Subscribers</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>EDIT</permissionkey>
+					<allowaccess>true</allowaccess>
+					<rolename>Registered Users</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>VIEW</permissionkey>
+					<allowaccess>true</allowaccess>
+					<rolename>Unverified Users</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>VIEW</permissionkey>
+					<allowaccess>false</allowaccess>
+					<rolename>Unauthenticated Users</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>EDIT</permissionkey>
+					<allowaccess>true</allowaccess>
+					<rolename>Administrators</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>VIEW</permissionkey>
+					<allowaccess>true</allowaccess>
+					<rolename>Administrators</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>VIEW</permissionkey>
+					<allowaccess>true</allowaccess>
+					<rolename>Registered Users</rolename>
+				</permission>
+				<permission>
+					<permissioncode>SYSTEM_TAB</permissioncode>
+					<permissionkey>VIEW</permissionkey>
+					<allowaccess>true</allowaccess>
+					<rolename>All Users</rolename>
+				</permission>
+			</tabpermissions>
+			<tabsettings>
+				<tabsetting>
+					<settingname>CacheDuration</settingname>
+					<settingvalue/>
+				</tabsetting>
+				<tabsetting>
+					<settingname>DoNotRedirect</settingname>
+					<settingvalue>False</settingvalue>
+				</tabsetting>
+				<tabsetting>
+					<settingname>LinkNewWindow</settingname>
+					<settingvalue>False</settingvalue>
+				</tabsetting>
+				<tabsetting>
+					<settingname>MaxVaryByCount</settingname>
+					<settingvalue/>
+				</tabsetting>
+				<tabsetting>
+					<settingname>CacheProvider</settingname>
+					<settingvalue/>
+				</tabsetting>
+				<tabsetting>
+					<settingname>IncludeVaryBy</settingname>
+					<settingvalue/>
+				</tabsetting>
+				<tabsetting>
+					<settingname>CustomStylesheet</settingname>
+					<settingvalue/>
+				</tabsetting>
+				<tabsetting>
+					<settingname>CacheIncludeExclude</settingname>
+					<settingvalue/>
+				</tabsetting>
+				<tabsetting>
+					<settingname>AllowIndex</settingname>
+					<settingvalue>True</settingvalue>
+				</tabsetting>
+				<tabsetting>
+					<settingname>ExcludeVaryBy</settingname>
+					<settingvalue/>
+				</tabsetting>
+			</tabsettings>
+			<panes>
+				<pane>
+					<name>ContentPane</name>
+					<modules>
+						<module>
+							<contentKey />
+							<moduleID>961</moduleID>
+							<alignment />
+							<alltabs>false</alltabs>
+							<border />
+							<cachemethod />
+							<cachetime>0</cachetime>
+							<color />
+							<containersrc />
+							<displayprint>false</displayprint>
+							<displaysyndicate>false</displaysyndicate>
+							<displaytitle>true</displaytitle>
+							<enddate>0001-01-01T00:00:00</enddate>
+							<footer />
+							<header />
+							<iconfile />
+							<inheritviewpermissions>true</inheritviewpermissions>
+							<iswebslice>false</iswebslice>
+							<modulepermissions>
+								<permission>
+									<permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+									<permissionkey>EDIT</permissionkey>
+									<allowaccess>true</allowaccess>
+									<rolename>Administrators</rolename>
+								</permission>
+							</modulepermissions>
+							<title>forDNN.UsersExportImport</title>
+							<startdate>0001-01-01T00:00:00</startdate>
+							<uniqueId>98e20ced-986b-4ad5-8275-b8bc4dae4e5b</uniqueId>
+							<visibility>Maximized</visibility>
+							<websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+							<webslicettl>0</webslicettl>
+							<cultureCode />
+							<modulesettings />
+							<tabmodulesettings />
+							<definition>forDNN.UsersExportImport</definition>
+							<moduledefinition>forDNN.UsersExportImport</moduledefinition>
+						</module>
+					</modules>
+				</pane>
+			</panes>
+		</tab>
+	</tabs>
+</portal>
