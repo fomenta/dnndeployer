@@ -17,7 +17,7 @@ This was a crucial step for customers managing multiple portals and multiple ins
 
 ## Publishing Challenges ##
 
-Every time a some user controls on a few modules were updated, deployment used to take about an entire night doing most of these steps manually on all portals and all servers. While now, this can be done in minutes.
+Every time one or more user controls on a few modules were updated, deployment used to take about an entire night doing most of these steps manually on all portals and all servers. While now, this can be done in minutes.
 
 ## Flavors ##
 
@@ -75,3 +75,12 @@ This is the actual DNN Library Extension that does the magic. It exposes a REST 
 > Deployer\Deployer.csproj
 
 Unit testing for this project is included on the prior VStudio Solution above.
+
+## Credits ##
+- Fomenta SAS
+>Code has been developed by Fomenta S.A.S., a specialized provider on Software Architecture and Advanced Integrations on Distributed Solutions for several Software Factories and other 3rd-party clients.
+
+- Facture SAS
+> This was the client who initially paid for the solution and has donated the code. Facture S.A.S. is a leading Software Factory developing custom-tailored solutions using DNN.  
+
+Code is currently maintained by **Fomenta S.A.S.**
