@@ -55,6 +55,7 @@ namespace Build.Extensions.DotNetNuke
             if (!string.IsNullOrWhiteSpace(UserName))
             {
                 this.restClient.Authenticator = new HttpBasicAuthenticator(UserName, Password);
+                this.restClient.CookieContainer = new CookieContainer();
             }
             var request = new RestRequest(actionUrl, method);
             if (args != null)

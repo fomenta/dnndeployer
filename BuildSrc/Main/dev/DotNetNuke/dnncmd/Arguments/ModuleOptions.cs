@@ -22,7 +22,7 @@ namespace dnncmd.Arguments
             HelpText = "Path to DotNetNuke module package (install) or module name (uninstall).")]
         public string Module { get; set; }
 
-        [Option('p', "pattern", HelpText = "Filter Pattern (regex) when searching for installed modules (GET).")]
+        [Option("pattern", HelpText = "Filter Pattern (regex) when searching for installed modules (GET).")]
         public string Pattern { get; set; }
 
         [Option('b', "builtin", HelpText = "Add this flag if you want to display built-in DotNetNuke modules.")]

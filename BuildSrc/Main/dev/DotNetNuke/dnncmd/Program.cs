@@ -65,7 +65,11 @@ namespace dnncmd
             // get
             //args = AddAuthenticationArgs("module --list");
             //args = AddAuthenticationArgs("module --list --pattern con --builtin");
-            //args = AddAuthenticationArgs("module --list --pattern blog");
+            //args = AddAuthenticationArgs("module --list --pattern Palermo.Modules.Bascula");
+            args = AddAuthenticationArgs(new[] { "module", "--list", "--pattern", "Palermo.Modules.Bascula" });
+            //args = AddAuthenticationArgs("module --list --patron Palermo.Modules.Bascula");
+            //args = AddAuthenticationArgs("module --list -p Palermo.Modules.Bascula");
+            // %DNNCMD% module %DNN_AUTH% --list --pattern "Palermo.Modules.Bascula"
 
             // page portal list
             //args = AddAuthenticationArgs("page --portals");
@@ -102,7 +106,7 @@ namespace dnncmd
             // page modules add
             //args = AddAuthenticationArgs("pagemodule --path //TestingUserControls --add --module forDNN.UsersExportImport --title \"User Export/Import\"");
             // page modules add with settings
-            args = AddAuthenticationArgs("pagemodule --path //TestingUserControls --add --module forDNN.UsersExportImport --title \"User Export/Import\" --settingname DefaultUserControl --settingvalue ControlKeyA ");
+            //args = AddAuthenticationArgs("pagemodule --path //TestingUserControls --add --module forDNN.UsersExportImport --title \"User Export/Import\" --settingname DefaultUserControl --settingvalue ControlKeyA ");
             // page modules add while keeping existing modules on page
             //args = AddAuthenticationArgs("pagemodule --path //TestingUserControls --add --module forDNN.UsersExportImport --keepexisting");
             // page modules add on specific pane
