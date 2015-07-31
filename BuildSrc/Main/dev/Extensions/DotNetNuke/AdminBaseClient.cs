@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using RestSharp.Deserializers;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ namespace Build.Extensions.DotNetNuke
     public class AdminBaseClient
     {
         #region Constants
+        public const int REST_TIMEOUT_MSEC = 15 * 60 * 1000; // 15 minutes
         public const string DEPLOYER_BASE_URL_STRINGFORMAT = "{0}/DesktopModules/Deployer/API";
         #endregion
 
@@ -58,6 +61,7 @@ namespace Build.Extensions.DotNetNuke
                 this.restClient.CookieContainer = new CookieContainer();
             }
             var request = new RestRequest(actionUrl, method);
+            request.Timeout = REST_TIMEOUT_MSEC;
             if (args != null)
             {
                 // NOTE: bug on RestSharp 104.4.0.0 does not accept null values for parameters
@@ -131,11 +135,24 @@ namespace Build.Extensions.DotNetNuke
                     var dictJson = new JsonDeserializer().Deserialize<Dictionary<string, string>>(response);
                     errorMessage = dictJson["ExceptionMessage"];
                 }
-                catch { errorMessage = response.Content; }
+                catch { errorMessage = FormatJSON(response.Content); }
             }
-            else { errorMessage = response.Content; }
+            else { errorMessage = FormatJSON(response.Content); }
 
             throw new Exception(string.Format("{0}: {1}", response.StatusCode, errorMessage));
+        }
+        #endregion
+
+        #region Json Formatter
+        public static string FormatJSON(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) { return json; }
+            if (json == "True" || json == "False") { return json; }
+
+            try
+            { return JToken.Parse(json).ToString(); }
+            catch (JsonReaderException)
+            { return json; }
         }
         #endregion
     }

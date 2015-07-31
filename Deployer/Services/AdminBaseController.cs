@@ -183,8 +183,8 @@ namespace Build.DotNetNuke.Deployer.Services
                     PackageInfo package = GetPackage(packageType, packageName);
                     if (package == null)
                     {
-                        callSuccess = false;
-                        extensionsDeleted.Add(new DeployResponseItem { Extension = packageName, Success = false, NotFound = true });
+                        callSuccess = true;
+                        extensionsDeleted.Add(new DeployResponseItem { Extension = packageName, Success = true, NotFound = true });
                     }
                     else
                     {

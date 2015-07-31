@@ -58,7 +58,7 @@ namespace Build.Extensions.Tests.DotNetNuke
         [TestMethod]
         public void Module_1_1_IsDeployerInstalled()
         {
-            var client = new DeployerUnsecuredClient(DNN_URL);
+            var client = new ModuleAdminClient(DNN_URL, DNN_USERNAME, DNN_PASSWORD);
             var success = client.IsDeployerInstalled();
             TestContext.WriteLine("DNN_URL: {0}", DNN_URL);
             TestContext.WriteLine("IsDeployerInstalled: {0}", success);
@@ -71,7 +71,7 @@ namespace Build.Extensions.Tests.DotNetNuke
         [TestMethod]
         public void Module_1_2_GetVersion()
         {
-            var client = new DeployerUnsecuredClient(DNN_URL);
+            var client = new ModuleAdminClient(DNN_URL, DNN_USERNAME, DNN_PASSWORD);
             var version = client.GetVersion();
             TestContext.WriteLine("GetVersion: {0}", version);
 

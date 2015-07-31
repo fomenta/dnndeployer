@@ -136,7 +136,7 @@
     <Compile Include="App_Base\BaseUnitTest.cs" />
     <Compile Include="App_Base\SampleData.cs" />
     <Compile Include="DotNetNuke\ModuleAdminClientTests.cs" />
-    <Compile Include="DotNetNuke\Legacy\ModuleUnsecuredClientTests.cs" />
+    <None Include="DotNetNuke\Legacy\ModuleUnsecuredClientTests.cs" />
     <Compile Include="DotNetNuke\PageModuleAdminClientTests.cs" />
     <Compile Include="DotNetNuke\PageAdminClientTests.cs" />
     <Compile Include="Editors\CredentialEditorTests.cs" />

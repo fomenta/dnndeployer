@@ -1,10 +1,12 @@
 ﻿using RestSharp;
+using System;
 using System.IO;
 using System.Net;
 
 namespace Build.Extensions.DotNetNuke
 {
-    public class DeployerUnsecuredClient : AdminBaseClient
+    [Obsolete("No se puede acceder de manera insegura al servidor.")]
+    internal class DeployerUnsecuredClient : AdminBaseClient
     {
         #region Constants
         public const string REST_MODULE_GET = "moduleunsecured/get";

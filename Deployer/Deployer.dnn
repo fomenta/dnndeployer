@@ -1,6 +1,6 @@
-<dotnetnuke type="Package" version="5.0">
+<dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="Deployer" type="Library" version="01.08.150724">
+    <package name="Deployer" type="Library" version="02.00.150729">
       <friendlyName>Deployer</friendlyName>
       <description>Deployer - Build DotNetNuke Integration</description>
       <iconFile>Images/icon_extensions.gif</iconFile>
@@ -39,8 +39,15 @@
 <ul>
   <li>Extended the controller to modify pages, add modules to pages, remove modules from pages</li>
 </ul>
+<h2>Version 2.0</h2>
+<ul>
+  <li>Allows publishing multiple modules in a single call</li>
+  <li>Fixed bug when calling --patern parameter, which was conflicting with --password (both had the -p shortcut)</li>
+  <li>Allow associating CodeOnTime controls to DNN pages</li>
+</ul>
 ]]>
       </releaseNotes>
+      <azureCompatible>true</azureCompatible>
       <dependencies>
         <dependency type="CoreVersion">07.00.02</dependency>
       </dependencies>

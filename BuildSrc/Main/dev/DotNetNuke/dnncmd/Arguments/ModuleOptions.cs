@@ -18,9 +18,9 @@ namespace dnncmd.Arguments
         [Option('d', "listdesktop", DefaultValue = false, HelpText = "Find details for a given desktop module or a set of modules.")]
         public bool ListDesktop { get; set; }
 
-        [Option('m', "module",
-            HelpText = "Path to DotNetNuke module package (install) or module name (uninstall).")]
-        public string Module { get; set; }
+        [OptionArray('m', "modules",
+            HelpText = "Path to DotNetNuke modules package (install) or module name (uninstall).")]
+        public string[] Modules { get; set; }
 
         [Option("pattern", HelpText = "Filter Pattern (regex) when searching for installed modules (GET).")]
         public string Pattern { get; set; }

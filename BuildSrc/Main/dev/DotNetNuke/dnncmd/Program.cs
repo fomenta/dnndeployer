@@ -47,26 +47,63 @@ namespace dnncmd
         {
             if (args != null && args.Length > 0) { return; }
 
+            string root = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\Main\test\Extensions.Tests\App_Data\SampleModules\";
+
+            // install 2 modules (upgrading one)
+            args = AddAuthenticationArgs(@"module -i -m " +
+                        root + @"Blog_06.00.06_Install.zip " +
+                        root + @"UsersExportImport_v.01.01.01.zip");
+            // downgrade
+            //args = AddAuthenticationArgs(@"module -i -f -m " +
+            //            root + @"Blog_06.00.04_Install.zip " +
+            //            root + @"UsersExportImport_v.01.01.01.zip");
+            // install older version first
+            //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.04_Install.zip ");
+            // uninstall 3 modules
+            //args = AddAuthenticationArgs(@"module -u -m dnnsimplearticle DotNetNuke.Blog forDNN.UsersExportImport");
+
+            #region Modulo con Errores en SQL Azure
+            /* WARNING: Module con errores en SQL Azure. Sale este error:
+             * Como resultado de la ejecución SQL, surgieron las siguientes excepciones: 
+             * System.Data.SqlClient.SqlException (0x80131904): 
+             * Introducing FOREIGN KEY constraint 'FK_dnn_DNNSimpleArticle_Article_dnn_ContentItems' 
+             * on table 'dnn_DNNSimpleArticle_Article' may cause cycles or multiple cascade paths. 
+             * Specify ON DELETE NO ACTION or ON UPDATE NO ACTION, or modify other FOREIGN KEY constraints. 
+             * Could not create constraint or index. See previous errors. 
+             * at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction) 
+             * at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose) 
+             * at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady) 
+             * at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite) 
+             * at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean asyncWrite) 
+             * at System.Data.SqlClient.SqlCommand.ExecuteNonQuery() at DotNetNuke.Data.SqlDataProvider.ExecuteScriptInternal(String connectionString, String script) 
+             * ClientConnectionId:ed774402-e10a-46a1-9f9a-e73c0e3227dd 
+             * Error Number:1785,State:0,Class:16 ClientConnectionId before routing:c30c6db6-e26b-4390-b206-bbacd3519414 
+             * Routing Destination:d70a9572f210.tr7.eastus1-a.worker.database.windows.net,11164 
+             * ALTER TABLE dbo.dnn_DNNSimpleArticle_Article ADD CONSTRAINT FK_dnn_DNNSimpleArticle_Article_dnn_ContentItems FOREIGN KEY ( [ContentItemID] ) REFERENCES dbo.dnn_ContentItems ( [ContentItemID] ) ON DELETE CASCADE ON UPDATE CASCADE
+             */
+            //args = AddAuthenticationArgs(@"module -i -m " + root + @"DNNSimpleArticle_00.02.01_Install.zip");
+            #endregion
+
             // version
             //args = AddAuthenticationArgs("module -v");
             // verify
             //args = AddAuthenticationArgs("module -y");
             // install
-            //args = AddAuthenticationArgs(@"module -i -m C:\TFS\Facture\Modulos\Build\Main\test\Extensions.Tests\App_Data\SampleModules\Blog_06.00.05_Install.zip");
+            //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.05_Install.zip");
             // upgrade
-            //args = AddAuthenticationArgs(@"module -i -m C:\TFS\Facture\Modulos\Build\Main\test\Extensions.Tests\App_Data\SampleModules\Blog_06.00.06_Install.zip");
+            //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.06_Install.zip");
             // downgrade (force)
-            //args = AddAuthenticationArgs(@"module -f -i -m C:\TFS\Facture\Modulos\Build\Main\test\Extensions.Tests\App_Data\SampleModules\Blog_06.00.04_Install.zip");
+            //args = AddAuthenticationArgs(@"module -f -i -m " + root + @"Blog_06.00.04_Install.zip");
             // downgrade (error)
-            //args = AddAuthenticationArgs(@"module -i -m C:\TFS\Facture\Modulos\Build\Main\test\Extensions.Tests\App_Data\SampleModules\Blog_06.00.04_Install.zip");
+            //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.04_Install.zip");
+
             // uninstall
-            //args = AddAuthenticationArgs(@"module -u -m Blog");
             //args = AddAuthenticationArgs(@"module -u -m DotNetNuke.Blog");
             // get
             //args = AddAuthenticationArgs("module --list");
             //args = AddAuthenticationArgs("module --list --pattern con --builtin");
             //args = AddAuthenticationArgs("module --list --pattern Palermo.Modules.Bascula");
-            args = AddAuthenticationArgs(new[] { "module", "--list", "--pattern", "Palermo.Modules.Bascula" });
+            //args = AddAuthenticationArgs(new[] { "module", "--list", "--pattern", "Palermo.Modules.Bascula" });
             //args = AddAuthenticationArgs("module --list --patron Palermo.Modules.Bascula");
             //args = AddAuthenticationArgs("module --list -p Palermo.Modules.Bascula");
             // %DNNCMD% module %DNN_AUTH% --list --pattern "Palermo.Modules.Bascula"
@@ -188,9 +225,17 @@ namespace dnncmd
             return AddAuthenticationArgs(newArgs);
         }
 
+        //private const string DNN_URL = "http://dnn721";
+        //private const string DNN_USERNAME = "host";
+        //private const string DNN_PASSWORD = "abc123$";
+
+        private const string DNN_URL = "http://puertobahia-test-staging.azurewebsites.net";
+        private const string DNN_USERNAME = "pescobar";
+        private const string DNN_PASSWORD = "abc1234$";
+
         private static string[] AddAuthenticationArgs(List<string> newArgs)
         {
-            newArgs.InsertRange(1, new[] { "-r", "http://dnn721", "--user", "host", "-p", "abc123$" });
+            newArgs.InsertRange(1, new[] { "-r", DNN_URL, "--user", DNN_USERNAME, "-p", DNN_PASSWORD });
             return newArgs.ToArray();
         }
         #endregion
@@ -255,12 +300,14 @@ namespace dnncmd
 
             if (options.Install)
             {
-                if (Program.Verbose) { Console.WriteLine("Installing {0}...", Path.GetFileName(options.Module)); }
+                if (Program.Verbose)
+                { foreach (var item in options.Modules) { Console.WriteLine("Installing {0}...", Path.GetFileName(item)); } }
                 if (!Module.Install(options)) { return (int)ExitCode.ErrorInstallingModule; }
             }
             else if (options.Uninstall)
             {
-                if (Program.Verbose) { Console.WriteLine("Uninstalling {0}...", Path.GetFileName(options.Module)); }
+                if (Program.Verbose)
+                { foreach (var item in options.Modules) { Console.WriteLine("Uninstalling {0}...", Path.GetFileName(item)); } }
                 if (!Module.Uninstall(options)) { return (int)ExitCode.ErrorInstallingModule; }
             }
             else if (options.List) { Module.List(options); }
@@ -346,10 +393,10 @@ namespace dnncmd
         private static class Module
         {
             public static bool Install(ModuleOptions options)
-            { return RunModuleAction<bool>(options, (client, o) => client.ModuleInstall(o.Force, o.Module)); }
+            { return RunModuleAction<bool>(options, (client, o) => client.ModuleInstall(o.Force, o.Modules)); }
 
             public static bool Uninstall(ModuleOptions options)
-            { return RunModuleAction<bool>(options, (client, o) => client.ModuleUninstall(o.Module)); }
+            { return RunModuleAction<bool>(options, (client, o) => client.ModuleUninstall(o.Modules)); }
 
             public static string List(ModuleOptions options)
             { return RunModuleAction<string>(options, (client, o) => client.ModuleGet(o.Pattern, o.BuiltIn)); }
@@ -424,9 +471,12 @@ namespace dnncmd
         }
         #endregion
 
-        #region Common
+        #region Json Formatter
         public static string FormatJSON(string json)
         {
+            if (string.IsNullOrWhiteSpace(json)) { return json; }
+            if (json == "True" || json == "False") { return json; }
+
             try
             { return JToken.Parse(json).ToString(); }
             catch (JsonReaderException)

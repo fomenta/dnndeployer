@@ -24,7 +24,8 @@ namespace Build.Extensions.DotNetNuke
         {
             var request = REST_CreateRequest(REST_MODULE_INSTALL, Method.PUT, new Dictionary<string, string> { { "deleteModuleFirstIfFound", deleteModuleFirstIfFound.ToString() } });
             // add files to upload
-            foreach (var item in modulesFilePath) { request.AddFile(Path.GetFileName(item), item); }
+            foreach (var item in modulesFilePath)
+            { if (!string.IsNullOrWhiteSpace(item)) { request.AddFile(Path.GetFileName(item), item); } }
 
             // execute the request
             var response = REST_Execute(request);

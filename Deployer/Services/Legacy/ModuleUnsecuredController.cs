@@ -15,7 +15,7 @@ namespace Build.DotNetNuke.Deployer.Services
 {
     [AllowAnonymous]
     [Obsolete("ModuleController is no longer secure. Use ModuleController instead.")]
-    public class ModuleUnsecuredController : AdminBaseController
+    internal class ModuleUnsecuredController : AdminBaseController
     {
         [Obsolete("Use ModuleController.Get() instead")]
         [HttpGet]

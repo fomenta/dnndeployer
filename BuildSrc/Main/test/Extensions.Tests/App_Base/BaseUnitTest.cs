@@ -108,7 +108,7 @@ namespace Build.Extensions.Tests
         {
             TestContext.WriteLine("[ModuleInstall: {0}]", modulesFilePath == null ? "" : string.Join(", ", modulesFilePath));
 
-            var client = new DeployerUnsecuredClient(DNN_URL);
+            var client = new ModuleAdminClient(DNN_URL, DNN_USERNAME, DNN_PASSWORD);
             var success = client.ModuleInstall(deleteModuleFirstIfFound, modulesFilePath);
             TestContext.WriteLine("LastRequestUrl: {0}", client.LastRequestUrl);
 
@@ -130,7 +130,7 @@ namespace Build.Extensions.Tests
         public bool ModuleUninstall(params string[] moduleNames)
         {
             TestContext.WriteLine("[ModuleUninstall: {0}]", moduleNames == null ? "" : string.Join(", ", moduleNames));
-            var client = new DeployerUnsecuredClient(DNN_URL);
+            var client = new ModuleAdminClient(DNN_URL, DNN_USERNAME, DNN_PASSWORD);
             var success = client.ModuleUninstall(moduleNames);
             TestContext.WriteLine("LastRequestUrl: {0}", client.LastRequestUrl);
 
@@ -148,7 +148,7 @@ namespace Build.Extensions.Tests
 
         public void ModuleGet(string filterPattern, bool builtIn = false)
         {
-            var client = new DeployerUnsecuredClient(DNN_URL);
+            var client = new ModuleAdminClient(DNN_URL, DNN_USERNAME, DNN_PASSWORD);
             var modules = client.ModuleGet(filterPattern, builtIn);
             CheckAndDisplayResponse(client);
         }
