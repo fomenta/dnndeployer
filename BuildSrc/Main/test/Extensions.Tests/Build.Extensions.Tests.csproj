@@ -129,13 +129,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Activities\TfsVersionTests.cs" />
     <Compile Include="Activities\FileAttribActivityTests.cs" />
     <Compile Include="Activities\DirectoryActivitiesTests.cs" />
     <Compile Include="Activities\FileActivityTests.cs" />
     <Compile Include="Activities\DnnDeployActivityTests.cs" />
     <Compile Include="App_Base\BaseUnitTest.cs" />
     <Compile Include="App_Base\SampleData.cs" />
+    <None Include="App_Data\AssemblyInfoSamples\Lib1\Aduanamiento.dnn" />
+    <None Include="App_Data\AssemblyInfoSamples\Lib1\AssemblyInfo.cs" />
+    <None Include="App_Data\AssemblyInfoSamples\Lib2\AssemblyInfo.cs" />
     <Compile Include="DotNetNuke\ModuleAdminClientTests.cs" />
+    <None Include="App_Data\AssemblyInfoSamples\Lib2\DespachoBodega.dnn" />
     <None Include="DotNetNuke\Legacy\ModuleUnsecuredClientTests.cs" />
     <Compile Include="DotNetNuke\PageModuleAdminClientTests.cs" />
     <Compile Include="DotNetNuke\PageAdminClientTests.cs" />
@@ -207,14 +212,27 @@
       <SubType>Designer</SubType>
     </XamlAppDef>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <XamlAppDef Include="App_Data\Xaml\InvokeTfsVersion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\AssemblyInfoSamples\Lib1\Aduanamiento.csproj" />
+    <Content Include="App_Data\AssemblyInfoSamples\Lib2\DespachoBodega.csproj" />
     <Content Include="App_Data\DnnTemplates\Pages\0_Zonafranca7dev_Partial.template" />
     <Content Include="App_Data\DnnTemplates\Pages\1_TopPage_Servicios.template" />
     <Content Include="App_Data\DnnTemplates\Pages\2_TopPage_Operaciones.template" />
     <Content Include="App_Data\DnnTemplates\Pages\3_NestedPage_ListadoDeTarifas.template" />
     <Content Include="App_Data\DnnTemplates\Pages\3_NestedPage_ListadodeTarifasWithModule.page.template" />
     <Content Include="App_Data\DnnTemplates\Pages\4_Operaciones_AdministrarUsuarios_WithModule.page.template" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="App_Data\Xaml\ChangeInArgument.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

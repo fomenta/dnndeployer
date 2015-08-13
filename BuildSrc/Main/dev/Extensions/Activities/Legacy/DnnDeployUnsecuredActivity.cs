@@ -1,5 +1,6 @@
 ﻿using Build.Extensions.DotNetNuke;
 using Microsoft.TeamFoundation.Build.Client;
+using System;
 using System.Activities;
 using System.Globalization;
 using System.IO;
@@ -7,6 +8,7 @@ using TfsBuildExtensions.Activities;
 
 namespace Build.Extensions.Activities
 {
+    [Obsolete("Use DnnDeployModuleActivity instead.")]
     [BuildActivity(HostEnvironmentOption.All)]
     public class DnnDeployModuleUnsecuredActivity : BaseCodeActivity
     {

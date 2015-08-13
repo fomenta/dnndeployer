@@ -1,0 +1,111 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Build.Extensions.Tests.App_Data.Xaml.InvokeTfsVersion" this:InvokeTfsVersion.CodeBuildNumber="3456"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:taf="clr-namespace:TfsBuildExtensions.Activities.FileSystem;assembly=TfsBuildExtensions.Activities"
+ xmlns:tat="clr-namespace:TfsBuildExtensions.Activities.TeamFoundationServer;assembly=TfsBuildExtensions.Activities"
+ xmlns:this="clr-namespace:Build.Extensions.Tests.App_Data.Xaml"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="MatchingFiles" Type="InArgument(s:String[])" />
+    <x:Property Name="DnnModuleDefinitionFiles" Type="InArgument(s:String[])" />
+    <x:Property Name="CSProj" Type="InArgument(s:String[])" />
+    <x:Property Name="VersioningAssemblyVersion" Type="InArgument(x:String)" />
+    <x:Property Name="VersioningFileVersion" Type="InArgument(x:String)" />
+    <x:Property Name="VersioningAssemblyDescription" Type="InArgument(x:String)" />
+    <x:Property Name="CodeBuildNumber" Type="InArgument(x:Int32)" />
+    <x:Property Name="SourcesDirectory" Type="InArgument(x:String)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>VB</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Build.Extensions.Tests.App_Data.Xaml.InvokeTfsVersion_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>TfsBuildExtensions.Activities.TeamFoundationServer</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities</AssemblyReference>
+      <AssemblyReference>TfsBuildExtensions.Activities.VisualStudio</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="VersioningDnnPackageVersion" />
+    </Sequence.Variables>
+    <Sequence DisplayName="Resolve Assembly/File Versions" sap2010:WorkflowViewState.IdRef="Sequence_2">
+      <Assign DisplayName="Assembly Version" sap2010:WorkflowViewState.IdRef="Assign_2">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[VersioningAssemblyVersion]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[VersioningAssemblyVersion.Replace(".*.*", String.Format(".{0:Mdd}.{1}", DateTime.Now, CodeBuildNumber)).Replace(".*", String.Format(".{0}", CodeBuildNumber))]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assembly File Version" sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[VersioningFileVersion]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[VersioningFileVersion.Replace(".*.*", String.Format(".{0:Mdd}.{1}", DateTime.Now, CodeBuildNumber)).Replace(".*", String.Format(".{0}", CodeBuildNumber))]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Dnn Package Version" sap2010:WorkflowViewState.IdRef="Assign_3">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[VersioningDnnPackageVersion]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[Regex.Replace(VersioningFileVersion, "(\d+)\.(\d+)\.(\d+)\.(\d+)", "$1.$2.$4")]</InArgument>
+        </Assign.Value>
+      </Assign>
+    </Sequence>
+    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Format(&quot;VersioningDnnPackageVersion: '{0}'&quot;, VersioningDnnPackageVersion)]" />
+    <tat:TfsVersion Build="{x:Null}" DateFormat="{x:Null}" FailBuildOnError="{x:Null}" IgnoreExceptions="{x:Null}" Major="{x:Null}" Minor="{x:Null}" Revision="{x:Null}" StartDate="{x:Null}" TextEncoding="{x:Null}" TreatWarningsAsErrors="{x:Null}" VersionTemplateFormat="{x:Null}" Action="SetVersion" AssemblyDescription="[VersioningAssemblyDescription]" AssemblyVersion="[VersioningAssemblyVersion]" BuildNumberRegex="\d+\.\d+\.\d+\.\d+" CombineBuildAndRevision="False" Delimiter="." DisplayName="Set Assemblies' Version" Files="[MatchingFiles]" ForceSetVersion="False" sap2010:WorkflowViewState.IdRef="TfsVersion_1" LogExceptionStack="True" PaddingCount="0" PaddingDigit="" SetAssemblyDescription="True" SetAssemblyFileVersion="True" SetAssemblyVersion="True" SetNuSpecVersion="True" UseUtcDate="False" Version="[VersioningFileVersion]" VersionFormat="Synced" />
+    <taf:File Attributes="{x:Null}" Checksum="{x:Null}" IgnoreExceptions="{x:Null}" LogExceptionStack="{x:Null}" Path="{x:Null}" TargetPath="{x:Null}" TextEncoding="{x:Null}" TreatWarningsAsErrors="{x:Null}" Action="Replace" DisplayName="Update version in *.dnn" FailBuildOnError="True" Files="[DnnModuleDefinitionFiles]" Force="False" sap2010:WorkflowViewState.IdRef="File_5" RegexPattern="[&quot;(&lt;package .*version=&quot;&quot;)[^&quot;&quot;]+&quot;]" Replacement="[&quot;${1}&quot; + VersioningDnnPackageVersion]" Time="0001-01-01" />
+    <sads:DebugSymbol.Symbol>d3ZDOlxVc2Vyc1xQRXNjb2JhclxEb2N1bWVudHNcR2l0SHViXGRubmRlcGxveWVyXEJ1aWxkU3JjXE1haW5cdGVzdFxFeHRlbnNpb25zLlRlc3RzXEFwcF9EYXRhXFhhbWxcSW52b2tlVGZzVmVyc2lvbi54YW1sGgGRAQGWAQECMwNVDgIBATcFUBACARdRBVGkAQIBFFIFUuAGAgEJUwVTnwQCAQI4Bz8QAgEgQAdHEAIBHEgHTxACARhRQ1GhAQIBFVKRBFKiBAIBElL8BFKCBQIBEVLBAlLiAgIBD1LzAlKQAwIBDVKtBlLGBgIBC1LhA1LkAwIBClOHA1PLAwIBCFPYA1OKBAIBBlOZAlOfAgIBBVOmAlPCAgIBAz0yPdEBAgEjOjM6TgIBIUUyRc0BAgEfQjNCSgIBHU0yTYIBAgEbSjNKUAIBGQ==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="264,384">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="264,61" />
+      <sap2010:ViewStateData Id="TfsVersion_1" sap:VirtualizedContainerService.HintSize="264,22" />
+      <sap2010:ViewStateData Id="File_5" sap:VirtualizedContainerService.HintSize="264,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="286,733">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Build.Extensions.Tests.App_Data.Xaml.InvokeTfsVersion_1" sap:VirtualizedContainerService.HintSize="326,813" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

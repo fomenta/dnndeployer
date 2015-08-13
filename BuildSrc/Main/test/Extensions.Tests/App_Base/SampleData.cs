@@ -27,10 +27,23 @@ namespace Build.Extensions.Tests
         public readonly static string ModulePathSimpleArticle = Path.Combine(BaseUnitTest.AppData, @"SampleModules\DNNSimpleArticle_00.02.01_Install.zip");
         public readonly static string ModuleNameSimpleArticle = "DNNSimpleArticle";
 
+        public readonly static string XamlChangeInArgument = Path.Combine(BaseUnitTest.AppData, @"Xaml\ChangeInArgument.xaml");
         public readonly static string XamlInvokeCreateDirectory = Path.Combine(BaseUnitTest.AppData, @"Xaml\InvokeCreateDirectory.xaml");
         public readonly static string XamlInvokeDeleteDirectory = Path.Combine(BaseUnitTest.AppData, @"Xaml\InvokeDeleteDirectory.xaml");
         public readonly static string XamlInvokeDnnDeploy = Path.Combine(BaseUnitTest.AppData, @"Xaml\InvokeDnnDeploy.xaml");
         public readonly static string XamlInvokeFileActity = Path.Combine(BaseUnitTest.AppData, @"Xaml\InvokeFileActity.xaml");
         public readonly static string XamlInvokeFileAttrib = Path.Combine(BaseUnitTest.AppData, @"Xaml\InvokeFileAttrib.xaml");
+        public readonly static string XamlInvokeTfsVersion = Path.Combine(BaseUnitTest.AppData, @"Xaml\InvokeTfsVersion.xaml");
+
+        public readonly static string AssemblyInfoSamples = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples");
+
+        public readonly static string SampleAssemblyInfo1 = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples\Lib1\AssemblyInfo.cs");
+        public readonly static string SampleAssemblyInfo2 = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples\Lib2\AssemblyInfo.cs");
+
+        public readonly static string SampleCsProj1 = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples\Lib1\Aduanamiento.csproj");
+        public readonly static string SampleCsProj2 = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples\Lib2\DespachoBodega.csproj");
+
+        public readonly static string SampleDnnPackageManifest1 = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples\Lib1\Aduanamiento.dnn");
+        public readonly static string SampleDnnPackageManifest2 = Path.Combine(BaseUnitTest.AppData, @"AssemblyInfoSamples\Lib2\DespachoBodega.dnn");
     }
 }
