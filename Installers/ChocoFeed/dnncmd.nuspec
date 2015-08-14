@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/chocolatey/wiki/CreatePackages -->
+    <id>dnncmd</id>
+    <title>dnncmd</title>
+    <version>[ENTER VERSION HERE]</version>
+    <authors>Pablo Escobar</authors>
+    <owners>Fomenta SAS</owners>
+    <summary>DotNetNuke Command-Line Utility</summary>
+    <description>DotNetNuke Command Line Utilitiy allows you to perform several actions against a DotNetNuke Installation (7.2.1 or above) including but not limited to the automation of deployment for:
+
+* Skins
+* Modules
+* Libraries
+* Language packs
+* Importing sites from remote templates
+* Pages on current portal or any portal.
+* Adding modules to pages.
+* Changing module details on a page (e.g. Module Title).
+	
+**Please Note**: This is an automatically updated package. If you find it is 
+out of date by more than a day or two, please contact the maintainer(s) and
+let them know the package is no longer updating correctly.
+    </description>
+    <projectUrl>https://github.com/fomenta/dnndeployer</projectUrl>
+    <packageSourceUrl>https://github.com/fomenta/dnndeployer</packageSourceUrl>
+    <projectSourceUrl>https://github.com/fomenta/dnndeployer</projectSourceUrl>
+    <!--<docsUrl></docsUrl>
+    <mailingListUrl></mailingListUrl>
+    <bugTrackerUrl></bugTrackerUrl>-->
+    <tags>dnncmd admin deployer dnndeployer DotNetNuke</tags>
+    <copyright></copyright>
+    <licenseUrl>https://github.com/fomenta/dnndeployer</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://cdn.rawgit.com/fomenta/dnndeployer/master/icons/dnncmd.png</iconUrl>
+    <releaseNotes></releaseNotes>
+  </metadata>
+  <files>
+    <file src="DnnExtension\**" target="DnnExtension" />
+    <file src="dnncmd.exe" target="." />
+    <file src="CommandLine.dll" target="." />
+    <file src="Newtonsoft.Json.dll" target="." />
+    <file src="RestSharp.dll" target="." />
+  </files>
+</package>

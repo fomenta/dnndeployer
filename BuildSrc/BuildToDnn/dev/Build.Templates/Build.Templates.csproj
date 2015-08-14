@@ -44,42 +44,42 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.TeamFoundation, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Build.Client.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Build.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Build.Common.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Build.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Workflow, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Build.Workflow.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Build.Workflow.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Common.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.TestImpact.BuildIntegration">
-      <HintPath>..\..\..\External\Tfs2012Assemblies\PrivateAssemblies\Microsoft.TeamFoundation.TestImpact.BuildIntegration.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\PrivateAssemblies\Microsoft.TeamFoundation.TestImpact.BuildIntegration.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.TestImpact.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\GAC_MSIL\Microsoft.TeamFoundation.TestImpact.Client.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\GAC_MSIL\Microsoft.TeamFoundation.TestImpact.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.VersionControl.Common.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.VersionControl.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
+      <HintPath>..\..\..\..\External\Tfs2012Assemblies\v2.0\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -164,7 +164,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Extensions\Build.Extensions.csproj">
+    <ProjectReference Include="..\Build.Extensions\Build.Extensions.csproj">
       <Project>{9d2f17c3-2f25-48a8-b944-0b9e8daacc7a}</Project>
       <Name>Build.Extensions</Name>
     </ProjectReference>

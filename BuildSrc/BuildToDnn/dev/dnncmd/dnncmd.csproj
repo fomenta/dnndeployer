@@ -61,25 +61,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\Deployer\Library\_AdminDTOs.cs">
+    <Compile Include="..\..\..\Deployer\Library\_AdminDTOs.cs">
       <Link>Client\_AdminDTOs.cs</Link>
     </Compile>
-    <Compile Include="..\..\AppVersion\CommonAssemblyInfo.cs">
+    <Compile Include="..\AppVersion\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Extensions\DotNetNuke\AdminBaseClient.cs">
+    <Compile Include="..\Build.Extensions\DotNetNuke\AdminBaseClient.cs">
       <Link>Client\AdminBaseClient.cs</Link>
     </Compile>
-    <Compile Include="..\..\Extensions\DotNetNuke\DeployerUnsecuredClient.cs">
+    <Compile Include="..\Build.Extensions\DotNetNuke\DeployerUnsecuredClient.cs">
       <Link>Client\DeployerUnsecuredClient.cs</Link>
     </Compile>
-    <Compile Include="..\..\Extensions\DotNetNuke\ModuleAdminClient.cs">
+    <Compile Include="..\Build.Extensions\DotNetNuke\ModuleAdminClient.cs">
       <Link>Client\ModuleAdminClient.cs</Link>
     </Compile>
-    <Compile Include="..\..\Extensions\DotNetNuke\PageAdminClient.cs">
+    <Compile Include="..\Build.Extensions\DotNetNuke\PageAdminClient.cs">
       <Link>Client\PageAdminClient.cs</Link>
     </Compile>
-    <Compile Include="..\..\Extensions\DotNetNuke\PageModuleAdminClient.cs">
+    <Compile Include="..\Build.Extensions\DotNetNuke\PageModuleAdminClient.cs">
       <Link>Client\PageModuleAdminClient.cs</Link>
     </Compile>
     <Compile Include="Arguments\CommonOptions.cs" />
