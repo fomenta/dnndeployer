@@ -23,9 +23,25 @@ namespace Build.Extensions.DotNetNuke
         public bool ModuleInstall(bool deleteModuleFirstIfFound, params string[] modulesFilePath)
         {
             var request = REST_CreateRequest(REST_MODULE_INSTALL, Method.PUT, new Dictionary<string, string> { { "deleteModuleFirstIfFound", deleteModuleFirstIfFound.ToString() } });
-            // add files to upload
+
+            List<string> modulesToInstall = new List<string>();
+
+            // check paths passed in whether a file or a folder
             foreach (var item in modulesFilePath)
-            { if (!string.IsNullOrWhiteSpace(item)) { request.AddFile(Path.GetFileName(item), item); } }
+            {
+                if (string.IsNullOrWhiteSpace(item)) { continue; }
+
+                // [2015-08-14] allow specifying a folder with all files within
+                if (File.GetAttributes(item).HasFlag(FileAttributes.Directory))
+                {
+                    var files = Directory.GetFiles(item, "*.zip", SearchOption.AllDirectories);
+                    foreach (string file in files) { modulesToInstall.Add(file); }
+                }
+                else { modulesToInstall.Add(Path.GetFullPath(item)); }
+            }
+
+            // add files to upload
+            foreach (var item in modulesToInstall) { request.AddFile(Path.GetFileName(item), item); }
 
             // execute the request
             var response = REST_Execute(request);

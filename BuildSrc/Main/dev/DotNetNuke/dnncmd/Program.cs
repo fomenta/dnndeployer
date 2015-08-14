@@ -47,12 +47,21 @@ namespace dnncmd
         {
             if (args != null && args.Length > 0) { return; }
 
-            string root = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\Main\test\Extensions.Tests\App_Data\SampleModules\";
-
             // install 2 modules (upgrading one)
-            args = AddAuthenticationArgs(@"module -i -m " +
-                        root + @"Blog_06.00.06_Install.zip " +
-                        root + @"UsersExportImport_v.01.01.01.zip");
+            //string testingFolder = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\Main\test\Extensions.Tests\App_Data\SampleModules\";
+            //args = AddAuthenticationArgs(@"module -i -m " +
+            //            testingFolder + @"Blog_06.00.06_Install.zip " +
+            //            testingFolder + @"UsersExportImport_v.01.01.01.zip");
+
+            string folder = @"\\FCBUILD\Deploy\2015.08\PB\QA\Modules-v1.2\v20150813.2\";
+            //args = AddAuthenticationArgs(@"module -i -m " +
+            //            folder + @"AbrirRecalada_1.1.0_Install.zip " +
+            //            folder + @"PuertoBahia.Core.Database_1.1.0_Install.zip " +
+            //            folder + @"PuertoBahia.Core.Entities_1.1.0_Install.zip " +
+            //            folder + @"PuertoBahia.Core.Utils_1.1.0_Install.zip");
+            // install all modules in a folder
+            args = AddAuthenticationArgs(@"module -i -m " + folder);
+
             // downgrade
             //args = AddAuthenticationArgs(@"module -i -f -m " +
             //            root + @"Blog_06.00.04_Install.zip " +
@@ -225,13 +234,13 @@ namespace dnncmd
             return AddAuthenticationArgs(newArgs);
         }
 
-        //private const string DNN_URL = "http://dnn721";
-        //private const string DNN_USERNAME = "host";
-        //private const string DNN_PASSWORD = "abc123$";
+        private const string DNN_URL = "http://dnn721";
+        private const string DNN_USERNAME = "host";
+        private const string DNN_PASSWORD = "abc123$";
 
-        private const string DNN_URL = "http://puertobahia-test-staging.azurewebsites.net";
-        private const string DNN_USERNAME = "pescobar";
-        private const string DNN_PASSWORD = "abc1234$";
+        //private const string DNN_URL = "http://puertobahia-test-staging.azurewebsites.net";
+        //private const string DNN_USERNAME = "pescobar";
+        //private const string DNN_PASSWORD = "abc1234$";
 
         private static string[] AddAuthenticationArgs(List<string> newArgs)
         {

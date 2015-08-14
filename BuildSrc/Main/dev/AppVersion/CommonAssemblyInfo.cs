@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Open Source")]
-[assembly: AssemblyCopyright("Copyleft © 2013-2115")]
+[assembly: AssemblyCopyright("Copyleft © 2015-2115")]
 [assembly: AssemblyTrademark("All rights reserved")]
 [assembly: AssemblyCulture("")]
 
@@ -17,5 +17,5 @@ using System.Runtime.InteropServices;
 //      Minor Version 
 //      Build Number
 //      Revision
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.2015.813")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.814.2015")]
