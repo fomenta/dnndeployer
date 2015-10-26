@@ -16,6 +16,7 @@ namespace Build.Extensions.DotNetNuke
 
         #region Constructor
         public DeployerUnsecuredClient(string targetDnnRootUrl)
+            : base()
         { TargetDotNetNukeRootUrl = targetDnnRootUrl; }
         #endregion
 

@@ -1,5 +1,9 @@
 # DNN Deployer #
 
+## Release Notes ##
+v2.2.1026.2015
+- Added logic to ignore errors in SSL certificates
+
 ## Automated Deployment ##
 
 I have been working on several DotNetNuke enhancements for several customers in terms of making it easier and **automating deployment** of:

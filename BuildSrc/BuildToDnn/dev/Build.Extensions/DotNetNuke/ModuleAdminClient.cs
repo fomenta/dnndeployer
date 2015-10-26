@@ -15,7 +15,7 @@ namespace Build.Extensions.DotNetNuke
         #endregion
 
         #region Constructor
-        public ModuleAdminClient() { }
+        public ModuleAdminClient() : base() { }
         public ModuleAdminClient(string targetDnnRootUrl, string userName, string password) : base(targetDnnRootUrl, userName, password) { }
         #endregion
 

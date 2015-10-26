@@ -16,8 +16,13 @@ namespace Build.Extensions.DotNetNuke
         #endregion
 
         #region Constructor
-        public AdminBaseClient() { }
-        public AdminBaseClient(string targetDnnRootUrl, string userName, string password)
+        public AdminBaseClient() {
+            // [2015-10-26] PE: to ignore errors in SSL certificates
+            // The underlying connection was closed: Could not establish trust relationship for the SSL/TLS secure channel.
+            ServicePointManager.ServerCertificateValidationCallback += 
+                                            (sender, certificate, chain, sslPolicyErrors) => true;
+        }
+        public AdminBaseClient(string targetDnnRootUrl, string userName, string password) : base()
         {
             TargetDotNetNukeRootUrl = targetDnnRootUrl;
             UserName = userName;
