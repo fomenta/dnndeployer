@@ -7,7 +7,7 @@
     <ProjectGuid>{5792F1F2-DD2C-4D1E-B21B-593FAD859BDC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>dnncmd</RootNamespace>
+    <RootNamespace>Build.DotNetNuke.Deployer</RootNamespace>
     <AssemblyName>dnncmd</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -63,31 +63,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Deployer\Library\_AdminDTOs.cs">
-      <Link>Client\_AdminDTOs.cs</Link>
+      <Link>Library\_AdminDTOs.cs</Link>
     </Compile>
     <Compile Include="..\AppVersion\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Build.Extensions\DotNetNuke\AdminBaseClient.cs">
-      <Link>Client\AdminBaseClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Build.Extensions\DotNetNuke\DeployerUnsecuredClient.cs">
-      <Link>Client\DeployerUnsecuredClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Build.Extensions\DotNetNuke\ModuleAdminClient.cs">
-      <Link>Client\ModuleAdminClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Build.Extensions\DotNetNuke\PageAdminClient.cs">
-      <Link>Client\PageAdminClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Build.Extensions\DotNetNuke\PageModuleAdminClient.cs">
-      <Link>Client\PageModuleAdminClient.cs</Link>
-    </Compile>
     <Compile Include="Arguments\CommonOptions.cs" />
+    <Compile Include="Arguments\InstallFolderOptions.cs" />
     <Compile Include="Arguments\ModuleOptions.cs" />
     <Compile Include="Arguments\Options.cs" />
     <Compile Include="Arguments\PageModuleOptions.cs" />
     <Compile Include="Arguments\PageOptions.cs" />
+    <Compile Include="Client\AdminBaseClient.cs" />
+    <Compile Include="Client\DeployerUnsecuredClient.cs" />
+    <Compile Include="Client\InstallFolderAdminClient.cs" />
+    <Compile Include="Client\ModuleAdminClient.cs" />
+    <Compile Include="Client\PageAdminClient.cs" />
+    <Compile Include="Client\PageModuleAdminClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

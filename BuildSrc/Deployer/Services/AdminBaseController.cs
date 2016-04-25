@@ -61,6 +61,52 @@ namespace Build.DotNetNuke.Deployer.Services
         #endregion
 
         #region Protected Helpers
+        protected HttpResponseMessage SaveExtensions(HttpFileCollectionBase Files)
+        {
+            var context = HttpContextSource.Current;
+            List<DeployResponseItem> filesProcessed = new List<DeployResponseItem>();
+
+            if (context.Request.Files.Count == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.NoContent,
+                                      new DeployResponse { ErrorMessage = "No files were uploaded" },
+                                      new MediaTypeHeaderValue("text/json"));
+            }
+
+            //Get current Script time-out
+            int scriptTimeout = context.Server.ScriptTimeout;
+            bool callSuccess = true;
+            try
+            {
+                //Set Script timeout to MAX value
+                context.Server.ScriptTimeout = int.MaxValue;
+
+                for (var i = 0; i < Files.Count; i++)
+                {
+                    var file = context.Request.Files[i];
+                    var uploadResponse = SaveExtension(file);
+
+                    var success = string.IsNullOrEmpty(uploadResponse.ErrorMessage);
+                    filesProcessed.Add(new DeployResponseItem { Extension = file.FileName, Success = uploadResponse.Success, ErrorMessage = uploadResponse.ErrorMessage });
+                }
+
+                return Request.CreateResponse(callSuccess ? HttpStatusCode.OK : HttpStatusCode.Conflict,
+                                        new DeployResponse { Success = callSuccess, AffectedItems = filesProcessed.Count, Files = filesProcessed },
+                                        new MediaTypeHeaderValue("text/json"));
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError,
+                                        new DeployResponse { Success = false, ErrorMessage = ex.ToString(), AffectedItems = filesProcessed.Count, Files = filesProcessed },
+                                        new MediaTypeHeaderValue("text/json"));
+            }
+            finally
+            {
+                //restore Script timeout
+                context.Server.ScriptTimeout = scriptTimeout;
+            }
+        }
+
 
         protected HttpResponseMessage InstallExtensions(string packageType, HttpFileCollectionBase Files, bool deleteModuleFirstIfFound = false)
         {
@@ -85,51 +131,33 @@ namespace Build.DotNetNuke.Deployer.Services
                 string InstallPath = Path.Combine(Globals.ApplicationMapPath, "Install", packageType);
                 if (!Directory.Exists(InstallPath)) { Directory.CreateDirectory(InstallPath); }
 
+                string errorMessage = "";
                 for (var i = 0; i < Files.Count; i++)
                 {
                     var file = context.Request.Files[i];
-                    if (file == null) { continue; }
-                    var fileName = Path.GetFileName(file.FileName);
-
-                    bool success = false;
-                    string errorMessage = "";
-
-                    if (!IsAllowedExtension(fileName))
+                    var uploadResponse = SaveExtension(file);
+                    if (!string.IsNullOrEmpty(uploadResponse.ErrorMessage))
                     {
-                        errorMessage = string.Format("Unsupported file extension: '{0}'", fileName);
-                        filesProcessed.Add(new DeployResponseItem { Extension = file.FileName, Success = success, ErrorMessage = errorMessage });
-                        continue;
-                    }
-
-                    var fullPath = Path.Combine(InstallPath, fileName);
-                    if (File.Exists(fullPath)) { File.Delete(fullPath); }
-                    file.SaveAs(fullPath);
-
-                    // validate
-                    PackageInfo parsedPackage = ParsePackage(fullPath, InstallPath);
-                    if (parsedPackage == null)
-                    {
-                        errorMessage = string.Format("Invalid package: '{0}'", fileName);
-                        filesProcessed.Add(new DeployResponseItem { Extension = file.FileName, Success = success, ErrorMessage = errorMessage });
+                        filesProcessed.Add(new DeployResponseItem { Extension = file.FileName, Success = false, ErrorMessage = uploadResponse.ErrorMessage });
                         continue;
                     }
 
                     // uninstall old one if found (when requested)
                     if (deleteModuleFirstIfFound)
                     {
-                        PackageInfo package = GetPackage(packageType, parsedPackage.Name);
+                        PackageInfo package = GetPackage(packageType, uploadResponse.PackageName);
                         if (package != null)
                         {
-                            var response = UninstallExtensions(packageType, new[] { parsedPackage.Name });
+                            var response = UninstallExtensions(packageType, new[] { uploadResponse.PackageName });
                             if (response.StatusCode != HttpStatusCode.OK)
                             {
-                                errorMessage = string.Format("WARNING: Could not uninstalling module '{0}' first. Proceeding to install on top of existing module.", parsedPackage.Name);
+                                errorMessage = string.Format("WARNING: Could not uninstalling module '{0}' first. Proceeding to install on top of existing module.", uploadResponse.PackageName);
                             }
                         }
                     }
 
                     // install
-                    success = Upgrade.InstallPackage(fullPath, packageType, writeFeedback: false);
+                    var success = Upgrade.InstallPackage(uploadResponse.FullName, packageType, writeFeedback: false);
                     if (!success)
                     {
                         errorMessage = "Error installing module. Check DotNetNuke Log for more details on error. It is possible a more recent version of the module was found installed. Use '--force' parameter to overwrite!";
@@ -252,11 +280,64 @@ namespace Build.DotNetNuke.Deployer.Services
         protected HttpResponseMessage ResponseNotFound(string errorMessageResourceKey, params object[] args)
         {
             return Request.CreateResponse(HttpStatusCode.NotFound,
-                //new DeployResponse { ErrorMessage = string.Format(errorMessageResourceKey, args) },
+                  //new DeployResponse { ErrorMessage = string.Format(errorMessageResourceKey, args) },
                   string.Format(errorMessageResourceKey, args),
                   new MediaTypeHeaderValue("text/json"));
         }
 
+        #endregion
+
+        #region Private
+        private UploadResponse SaveExtension(HttpPostedFileBase file)
+        {
+            var response = new UploadResponse();
+
+            response.PackageType = PackageTypes.Module;    // default location
+            response.InstallDir = Path.Combine(Globals.ApplicationMapPath, "Install", response.PackageType);
+            if (!Directory.Exists(response.InstallDir)) { Directory.CreateDirectory(response.InstallDir); }
+
+            if (file == null) { return null; }
+            var fileName = Path.GetFileName(file.FileName);
+
+            if (!IsAllowedExtension(fileName))
+            {
+                response.ErrorMessage = string.Format("Unsupported file extension: '{0}'", fileName);
+                return response;
+            }
+
+            response.FullName = Path.Combine(response.InstallDir, fileName);
+            if (File.Exists(response.FullName)) { File.Delete(response.FullName); }
+            file.SaveAs(response.FullName);
+
+            // validate
+            PackageInfo parsedPackage = ParsePackage(response.FullName, response.InstallDir);
+            if (parsedPackage == null)
+            {
+                response.ErrorMessage = string.Format("Invalid package: '{0}'", fileName);
+                return response;
+            }
+
+            response.PackageName = parsedPackage.Name;
+
+            // place package in the right place
+            var newPackageType = parsedPackage.PackageType;
+            if (response.PackageType != newPackageType)
+            {
+                response.PackageType = newPackageType;
+                var newInstallPath = Path.Combine(Globals.ApplicationMapPath, "Install", newPackageType);
+                if (!Directory.Exists(newInstallPath)) { Directory.CreateDirectory(newInstallPath); }
+
+                var newFullPath = Path.Combine(newInstallPath, fileName);
+
+                File.Move(response.FullName, newFullPath);
+
+                response.InstallDir = newInstallPath;
+                response.FullName = newFullPath;
+            }
+
+            response.Success = true;
+            return response;
+        }
         #endregion
     }
 }

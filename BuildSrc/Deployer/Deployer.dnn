@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="Deployer" type="Library" version="02.00.150729">
+    <package name="Deployer" type="Library" version="2.3.425">
       <friendlyName>Deployer</friendlyName>
       <description>Deployer - Build DotNetNuke Integration</description>
       <iconFile>Images/icon_extensions.gif</iconFile>

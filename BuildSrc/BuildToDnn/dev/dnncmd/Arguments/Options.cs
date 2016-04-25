@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using CommandLine.Text;
 
-namespace dnncmd.Arguments
+namespace Build.DotNetNuke.Deployer.Client.ConsoleArguments
 {
     // Define a class to receive parsed values
     internal class Options

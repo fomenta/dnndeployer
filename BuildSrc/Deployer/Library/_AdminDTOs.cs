@@ -3,6 +3,16 @@ using System.Linq;
 
 namespace Build.DotNetNuke.Deployer.Library
 {
+    public class UploadResponse
+    {
+        public bool Success { get; set; }
+        public string PackageType { get; set; }
+        public string InstallDir { get; set; }
+        public string FullName { get; set; }
+        public string PackageName { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
     public class DeployResponse
     {
         public bool Success { get; set; }

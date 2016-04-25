@@ -1,6 +1,6 @@
 ﻿using Build.DotNetNuke.Deployer.Library;
-using Build.Extensions.DotNetNuke;
-using dnncmd.Arguments;
+using Build.DotNetNuke.Deployer.Client;
+using Build.DotNetNuke.Deployer.Client.ConsoleArguments;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace dnncmd
+namespace Build.DotNetNuke.Deployer
 {
     internal class Program
     {
@@ -267,6 +267,8 @@ namespace dnncmd
             {
                 case "module":
                     return ExecuteModuleOptions((ModuleOptions)invokedVerbInstance);
+                case "installfolder":
+                    return ExecuteInstallFolderOptions((InstallFolderOptions)invokedVerbInstance);
                 case "page":
                     return ExecutePageOptions((PageOptions)invokedVerbInstance);
                 case "pagemodule":
@@ -326,6 +328,21 @@ namespace dnncmd
             return (int)ExitCode.Success;
         }
 
+
+        private static int ExecuteInstallFolderOptions(InstallFolderOptions options)
+        {
+            if (ExecuteCommonOptions(options)) { return (int)ExitCode.Success; }
+
+            if (options.Count) { InstallFolder.Count(options); }
+            else if (options.Get) { InstallFolder.Get(options); }
+            else if (options.Save) { InstallFolder.Save(options); }
+            else if (options.Delete) { InstallFolder.Delete(options); }
+            else if (options.Clear) { InstallFolder.Clear(options); }
+            else { throw new NotImplementedException(); }
+
+            return (int)ExitCode.Success;
+        }
+
         private static int ExecutePageOptions(PageOptions options)
         {
             if (ExecuteCommonOptions(options)) { return (int)ExitCode.Success; }
@@ -362,6 +379,12 @@ namespace dnncmd
         {
             return RunAction<TResponse, ModuleAdminClient, ModuleOptions>(options, func);
         }
+
+        public static TResponse RunInstallFolderAction<TResponse>(InstallFolderOptions options, Func<InstallFolderAdminClient, InstallFolderOptions, TResponse> func)
+        {
+            return RunAction<TResponse, InstallFolderAdminClient, InstallFolderOptions>(options, func);
+        }
+
 
         public static TResponse RunPageAction<TResponse>(PageOptions options, Func<PageAdminClient, PageOptions, TResponse> func)
         {
@@ -414,6 +437,27 @@ namespace dnncmd
             { return RunModuleAction<string>(options, (client, o) => client.ModuleGetDesktop(o.Pattern)); }
         }
         #endregion
+
+        #region Install Folder Actions
+        private static class InstallFolder
+        {
+            public static string Get(InstallFolderOptions options)
+            { return RunInstallFolderAction<string>(options, (client, o) => client.Get(o.PackageType)); }
+
+            public static int Count(InstallFolderOptions options)
+            { return RunInstallFolderAction<int>(options, (client, o) => client.Count(o.PackageType)); }
+
+            public static bool Save(InstallFolderOptions options)
+            { return RunInstallFolderAction<bool>(options, (client, o) => client.Save(o.Modules)); }
+
+            public static int Delete(InstallFolderOptions options)
+            { return RunInstallFolderAction<int>(options, (client, o) => client.Delete(o.PackageType, o.Modules)); }
+
+            public static string Clear(InstallFolderOptions options)
+            { return RunInstallFolderAction<string>(options, (client, o) => client.Clear(o.PackageType)); }
+        }
+        #endregion
+
 
         #region Dnn Page Actions
         private static class Page
