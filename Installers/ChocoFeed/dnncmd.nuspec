@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<!-- <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> -->
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+<!-- <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"> -->
   <metadata>
-    <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/chocolatey/wiki/CreatePackages -->
+    <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/choco/wiki/CreatePackages -->
     <id>dnncmd</id>
     <title>dnncmd</title>
-    <version>[ENTER VERSION HERE]</version>
+    <version>2.3.427.161</version>
     <authors>Pablo Escobar</authors>
     <owners>Fomenta SAS</owners>
     <summary>DotNetNuke Command-Line Utility</summary>
@@ -40,8 +42,5 @@ let them know the package is no longer updating correctly.
   <files>
     <file src="DnnExtension\**" target="DnnExtension" />
     <file src="dnncmd.exe" target="." />
-    <file src="CommandLine.dll" target="." />
-    <file src="Newtonsoft.Json.dll" target="." />
-    <file src="RestSharp.dll" target="." />
   </files>
 </package>

@@ -1,5 +1,7 @@
 ﻿using Build.DotNetNuke.Deployer.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
+using System.Web.Script.Serialization;
 
 namespace Build.Extensions.Tests.DotNetNuke
 {
@@ -14,6 +16,37 @@ namespace Build.Extensions.Tests.DotNetNuke
 
             // display some data
             CheckAndDisplayResponse(client);
+        }
+
+        [TestMethod]
+        public void InstallFolder_1_1_2_Get_ResponseParse_2()
+        {
+            var response = @"[
+]";
+            var response2 = @"[
+  ""Module\\DNNSimpleArticle_00.02.01_Install.zip"",
+  ""Module\\UsersExportImport_v.01.01.01.zip""
+]";
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var list = js.Deserialize<string[]>(response);
+
+            Assert.AreEqual(2, list.Length);
+            Assert.IsTrue(list[0].Contains("DNNSimpleArticle"), "DNNSimpleArticle");
+            Assert.IsTrue(list[1].Contains("UsersExportImport"), "UsersExportImport");
+        }
+
+
+        [TestMethod]
+        public void InstallFolder_1_1_3_Get_ResponseParse_0()
+        {
+            var response = @"[
+]";
+
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            var list = js.Deserialize<string[]>(response);
+
+            Assert.AreEqual(0, list.Length);
         }
 
         [TestMethod]
@@ -35,14 +68,28 @@ namespace Build.Extensions.Tests.DotNetNuke
         }
 
         [TestMethod]
-        public void InstallFolder_1_4_Delete()
+        public void InstallFolder_1_4_InstallResources()
+        {
+            client.InstallResources();
+            CheckAndDisplayResponse(client);
+        }
+
+        [TestMethod]
+        public void InstallFolder_1_5_1_Delete()
         {
             client.Delete("Module", "blog");
             CheckAndDisplayResponse(client);
         }
 
         [TestMethod]
-        public void InstallFolder_1_4_Clear()
+        public void InstallFolder_1_5_2_Delete()
+        {
+            client.Delete("Module", "simplearticle", "UsersExport");
+            CheckAndDisplayResponse(client);
+        }
+
+        [TestMethod]
+        public void InstallFolder_1_6_Clear()
         {
             client.Clear();
             CheckAndDisplayResponse(client);
@@ -52,9 +99,6 @@ namespace Build.Extensions.Tests.DotNetNuke
         public void InstallFolder_2_1_Blog_Downgrade()
         {
             client.Save(SampleData.ModulePathBlog);
-            CheckAndDisplayResponse(client);
-
-            client.Delete("Module", "blog");
             CheckAndDisplayResponse(client);
 
             client.Save(SampleData.ModulePathBlogDowngrade);
@@ -67,12 +111,16 @@ namespace Build.Extensions.Tests.DotNetNuke
             client.Save(SampleData.ModulePathBlog);
             CheckAndDisplayResponse(client);
 
-            client.Delete("Module", "blog");
-            CheckAndDisplayResponse(client);
-
             client.Save(SampleData.ModulePathBlogUpgrade);
             CheckAndDisplayResponse(client);
         }
 
+
+        [TestMethod]
+        public void InstallFolder_2_3_Save_All()
+        {
+            client.Save(SampleData.ModulePathBlog, SampleData.ModulePathSimpleArticle, SampleData.ModulePathUserExport);
+            CheckAndDisplayResponse(client);
+        }
     }
 }

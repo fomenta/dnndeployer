@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using RestSharp.Authenticators;
 using RestSharp.Deserializers;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Build.DotNetNuke.Deployer.Client
         {
             // [2015-10-26] PE: to ignore errors in SSL certificates
             // The underlying connection was closed: Could not establish trust relationship for the SSL/TLS secure channel.
-            ServicePointManager.ServerCertificateValidationCallback += 
+            ServicePointManager.ServerCertificateValidationCallback +=
                                             (sender, certificate, chain, sslPolicyErrors) => true;
         }
 
@@ -31,6 +32,7 @@ namespace Build.DotNetNuke.Deployer.Client
 
         public void SetupDnn(string targetDnnRootUrl, string userName, string password)
         {
+            if (targetDnnRootUrl.EndsWith("/")) { targetDnnRootUrl = targetDnnRootUrl.Substring(0, targetDnnRootUrl.Length - 1); }
             this.TargetDotNetNukeRootUrl = targetDnnRootUrl;
             this.UserName = userName;
             this.Password = password;

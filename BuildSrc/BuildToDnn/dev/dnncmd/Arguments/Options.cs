@@ -6,14 +6,17 @@ namespace Build.DotNetNuke.Deployer.Client.ConsoleArguments
     // Define a class to receive parsed values
     internal class Options
     {
-        [VerbOption("module", HelpText = "To administer modules.")]
+        [VerbOption("module", HelpText = "Administer modules.")]
         public ModuleOptions ModuleVerb { get; set; }
 
-        [VerbOption("page", HelpText = "To administer pages.")]
+        [VerbOption("page", HelpText = "Administer pages.")]
         public PageOptions PageVerb { get; set; }
 
-        [VerbOption("pagemodule", HelpText = "To administer modules within a page.")]
+        [VerbOption("pagemodule", HelpText = "Administer modules within a page.")]
         public PageModuleOptions PageModuleVerb { get; set; }
+
+        [VerbOption("installfolder", HelpText = "Administer install folder directory on the web server.")]
+        public InstallFolderOptions InstallFolderVerb { get; set; }
 
         [ParserState]
         public IParserState LastParserState { get; set; }

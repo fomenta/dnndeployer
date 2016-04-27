@@ -1,6 +1,7 @@
 ﻿using Build.DotNetNuke.Deployer.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
+using RestSharp.Authenticators;
 
 namespace Build.Extensions.Tests.DotNetNuke
 {

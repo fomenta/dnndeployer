@@ -48,19 +48,19 @@ namespace Build.DotNetNuke.Deployer
             if (args != null && args.Length > 0) { return; }
 
             // install 2 modules (upgrading one)
-            //string testingFolder = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\Main\test\Extensions.Tests\App_Data\SampleModules\";
+            string testingFolder = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\BuildToDnn\test\Client\App_Data\SampleModules\";
             //args = AddAuthenticationArgs(@"module -i -m " +
             //            testingFolder + @"Blog_06.00.06_Install.zip " +
             //            testingFolder + @"UsersExportImport_v.01.01.01.zip");
 
-            string folder = @"\\FCBUILD\Deploy\2015.08\PB\QA\Modules-v1.2\v20150813.2\";
+            //string folder = @"\\FCBUILD\Deploy\2015.08\PB\QA\Modules-v1.2\v20150813.2\";
             //args = AddAuthenticationArgs(@"module -i -m " +
             //            folder + @"AbrirRecalada_1.1.0_Install.zip " +
             //            folder + @"PuertoBahia.Core.Database_1.1.0_Install.zip " +
             //            folder + @"PuertoBahia.Core.Entities_1.1.0_Install.zip " +
             //            folder + @"PuertoBahia.Core.Utils_1.1.0_Install.zip");
             // install all modules in a folder
-            args = AddAuthenticationArgs(@"module -i -m " + folder);
+            //args = AddAuthenticationArgs(@"module -i -m " + folder);
 
             // downgrade
             //args = AddAuthenticationArgs(@"module -i -f -m " +
@@ -116,6 +116,29 @@ namespace Build.DotNetNuke.Deployer
             //args = AddAuthenticationArgs("module --list --patron Palermo.Modules.Bascula");
             //args = AddAuthenticationArgs("module --list -p Palermo.Modules.Bascula");
             // %DNNCMD% module %DNN_AUTH% --list --pattern "Palermo.Modules.Bascula"
+
+
+            // installfolder
+            // upload a module to dnn install folder (with verbose)
+            //args = AddAuthenticationArgs(@"installfolder --verbose --save --modules " + testingFolder + "Blog_06.00.05_Install.zip");
+            // upload a module to dnn install folder
+            //args = AddAuthenticationArgs(@"installfolder --save --modules " + testingFolder + "Blog_06.00.05_Install.zip");
+            // upload all modules in folder to dnn install folder (no verbose)
+            //args = AddAuthenticationArgs(@"installfolder --save --modules " + testingFolder);
+            // clear all modules in dnn install folder
+            //args = AddAuthenticationArgs(@"installfolder --clear");
+            //args = AddAuthenticationArgs(@"installfolder --save --modules " + testingFolder);
+            // delete a module (containing name) in dnn install folder
+            //args = AddAuthenticationArgs(@"installfolder --delete --modules blog");
+            // get a list of modules in dnn install folder
+            //args = AddAuthenticationArgs(@"installfolder --get");
+            // get a list of modules in dnn install folder and specific subfolder (case sensitive)
+            //args = AddAuthenticationArgs(@"installfolder --get --packagetype Module");
+            // ERROR: BadRequest: Invalid value: 'module'
+            //args = AddAuthenticationArgs(@"installfolder --get --packagetype module");
+            // install all modules in dnn install folder
+            args = AddAuthenticationArgs(@"installfolder --installresources");
+
 
             // page portal list
             //args = AddAuthenticationArgs("page --portals");
@@ -234,7 +257,7 @@ namespace Build.DotNetNuke.Deployer
             return AddAuthenticationArgs(newArgs);
         }
 
-        private const string DNN_URL = "http://dnn721";
+        private const string DNN_URL = "http://721.dnndev.me";
         private const string DNN_USERNAME = "host";
         private const string DNN_PASSWORD = "abc123$";
 
@@ -336,6 +359,7 @@ namespace Build.DotNetNuke.Deployer
             if (options.Count) { InstallFolder.Count(options); }
             else if (options.Get) { InstallFolder.Get(options); }
             else if (options.Save) { InstallFolder.Save(options); }
+            else if (options.InstallResources) { InstallFolder.InstallResources(options); }
             else if (options.Delete) { InstallFolder.Delete(options); }
             else if (options.Clear) { InstallFolder.Clear(options); }
             else { throw new NotImplementedException(); }
@@ -405,6 +429,8 @@ namespace Build.DotNetNuke.Deployer
             TResponse data = func(client, options);
             var response = client.LastResponse;
 
+            if (options.Verbose && !(data is string) && response.Content != null) { Console.WriteLine(response.Content); }
+
             if (data is bool && !Convert.ToBoolean(data)) { Console.WriteLine("ERROR: {0}", response.Content); }
             Console.WriteLine(FormatJSON(Convert.ToString(data)));
 
@@ -415,7 +441,6 @@ namespace Build.DotNetNuke.Deployer
                 else if (!string.IsNullOrWhiteSpace(response.ErrorMessage))
                 { throw new ArgumentException(response.ErrorMessage); }
             }
-
 
             return data;
         }
@@ -449,12 +474,14 @@ namespace Build.DotNetNuke.Deployer
 
             public static bool Save(InstallFolderOptions options)
             { return RunInstallFolderAction<bool>(options, (client, o) => client.Save(o.Modules)); }
+            public static bool InstallResources(InstallFolderOptions options)
+            { return RunInstallFolderAction<bool>(options, (client, o) => client.InstallResources()); }
 
-            public static int Delete(InstallFolderOptions options)
-            { return RunInstallFolderAction<int>(options, (client, o) => client.Delete(o.PackageType, o.Modules)); }
+            public static bool Delete(InstallFolderOptions options)
+            { return RunInstallFolderAction<bool>(options, (client, o) => client.Delete(o.PackageType, o.Modules)); }
 
-            public static string Clear(InstallFolderOptions options)
-            { return RunInstallFolderAction<string>(options, (client, o) => client.Clear(o.PackageType)); }
+            public static bool Clear(InstallFolderOptions options)
+            { return RunInstallFolderAction<bool>(options, (client, o) => client.Clear(o.PackageType)); }
         }
         #endregion
 

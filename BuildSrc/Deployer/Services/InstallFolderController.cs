@@ -1,6 +1,7 @@
 ﻿using Build.DotNetNuke.Deployer.Library;
 using DotNetNuke.Common;
 using DotNetNuke.Web.Api;
+using ds = DotNetNuke.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,10 +19,11 @@ namespace Build.DotNetNuke.Deployer.Services
         [HttpGet]
         public HttpResponseMessage Get(string packageType = "")
         {
-            string installFolder; HttpResponseMessage response;
+            HttpResponseMessage response;
+            string installFolder;
             if ((response = ResolveInstallFolder(out installFolder, packageType)) != null) { return response; }
 
-            var files = Directory.GetFiles(installFolder, "*.zip", SearchOption.AllDirectories).Select(x => x.Replace(installFolder + "/", "")).ToArray();
+            var files = Directory.GetFiles(installFolder, "*.zip", SearchOption.AllDirectories).Select(x => x.Replace(installFolder + @"\", "")).ToArray();
             return Request.CreateResponse(HttpStatusCode.OK, files, new MediaTypeHeaderValue("text/json"));
         }
 
@@ -50,6 +52,19 @@ namespace Build.DotNetNuke.Deployer.Services
         //[IFrameSupportedValidateAntiForgeryToken]
         public HttpResponseMessage Save() { return SaveExtensions(HttpContextSource.Current.Request.Files); }
 
+        [HttpPut]
+        public HttpResponseMessage InstallResources()
+        {
+            //install new resources(s)
+            var packages = ds.Upgrade.Upgrade.GetInstallPackages();
+            foreach (var package in packages)
+            {
+                ds.Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, writeFeedback: false);
+            }
+
+            return Request.CreateResponse<bool>(HttpStatusCode.OK, true, new MediaTypeHeaderValue("text/json"));
+        }
+
 
         [HttpDelete]
         //[IFrameSupportedValidateAntiForgeryToken]
@@ -59,7 +74,6 @@ namespace Build.DotNetNuke.Deployer.Services
             var packageNames = csvPackageNames.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             return RemoveExtensions(PackageTypes.Module, packageNames);
-
         }
 
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Web.Script.Serialization;
 
 namespace Build.DotNetNuke.Deployer.Client
 {
@@ -12,6 +13,7 @@ namespace Build.DotNetNuke.Deployer.Client
         public const string REST_INSTALL_FOLDER_GET = "installfolder/get?packageType={packageType}";
         public const string REST_INSTALL_FOLDER_COUNT = "installfolder/count?packageType={packageType}";
         public const string REST_INSTALL_FOLDER_SAVE = "installfolder/save";
+        public const string REST_INSTALL_FOLDER_INSTALLRESOURCES = "installfolder/InstallResources";
         public const string REST_INSTALL_FOLDER_DELETE = "installfolder/delete?packageType={packageType}&csvPackageNames={csvPackageNames}";
         public const string REST_INSTALL_FOLDER_CLEAR = "installfolder/clear?packageType={packageType}";
         #endregion
@@ -53,7 +55,14 @@ namespace Build.DotNetNuke.Deployer.Client
         public string Get(string packageType = "")
         {
             var response = REST_Execute(REST_INSTALL_FOLDER_GET, new Dictionary<string, string> { { "packageType", packageType } });
-            return response.Content;
+            string[] list = null;
+
+            if (!string.IsNullOrWhiteSpace(response.Content))
+            {
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                list = js.Deserialize<string[]>(response.Content);
+            }
+            return list == null ? "" : string.Join("\n", list);
         }
 
         public int Count(string packageType = "")
@@ -62,17 +71,23 @@ namespace Build.DotNetNuke.Deployer.Client
             return Convert.ToInt32(response.Content);
         }
 
-        public int Delete(string packageType, params string[] moduleNames)
+        public bool Delete(string packageType, params string[] moduleNames)
         {
             var modules = string.Join(",", moduleNames);
             var response = REST_Execute(REST_INSTALL_FOLDER_DELETE, Method.DELETE, new Dictionary<string, string> { { "packageType", packageType }, { "csvPackageNames", modules } });
-            return Convert.ToInt32(response.Content);
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
-        public string Clear(string packageType = "")
+        public bool Clear(string packageType = "")
         {
             var response = REST_Execute(REST_INSTALL_FOLDER_CLEAR, Method.DELETE, new Dictionary<string, string> { { "packageType", packageType } });
-            return response.Content;
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        public bool InstallResources()
+        {
+            var response = REST_Execute(REST_INSTALL_FOLDER_INSTALLRESOURCES, Method.PUT);
+            return response.StatusCode == HttpStatusCode.OK;
         }
         #endregion
     }

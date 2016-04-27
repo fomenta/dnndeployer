@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using d = System.Diagnostics;
@@ -274,6 +275,16 @@ namespace Build.DotNetNuke.Deployer.Services
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension) && AllowedExtensionsLowerCase.Contains(extension.ToLower());
         }
+
+        protected void FileDelete(string fullName)
+        {
+            var fi = new System.IO.FileInfo(fullName);
+            if (fi.Exists)
+            {
+                if (fi.IsReadOnly) { fi.IsReadOnly = false; }
+                File.Delete(fullName);
+            }
+        }
         #endregion
 
         #region return Response*
@@ -288,7 +299,7 @@ namespace Build.DotNetNuke.Deployer.Services
         #endregion
 
         #region Private
-        private UploadResponse SaveExtension(HttpPostedFileBase file)
+        private UploadResponse SaveExtension(HttpPostedFileBase file, bool deleteOtherVersions = true)
         {
             var response = new UploadResponse();
 
@@ -298,6 +309,9 @@ namespace Build.DotNetNuke.Deployer.Services
 
             if (file == null) { return null; }
             var fileName = Path.GetFileName(file.FileName);
+            const string PATTERN_BASE_FILENAME= @"^(.+)_(\d+\.\d+\.\d+).*$";
+            var baseFile = Regex.Replace(fileName, PATTERN_BASE_FILENAME, "$1");
+            if (string.IsNullOrEmpty(baseFile)) { baseFile = Path.GetFileNameWithoutExtension(fileName); }
 
             if (!IsAllowedExtension(fileName))
             {
@@ -306,7 +320,19 @@ namespace Build.DotNetNuke.Deployer.Services
             }
 
             response.FullName = Path.Combine(response.InstallDir, fileName);
-            if (File.Exists(response.FullName)) { File.Delete(response.FullName); }
+            FileDelete(response.FullName);
+
+            // delete other versions pending to be installed for the same package
+            if (deleteOtherVersions)
+            {
+                var otherVersions = Directory.GetFiles(response.InstallDir, string.Format("{0}*.zip", baseFile));
+                if (otherVersions != null)
+                {
+                    foreach (var item in otherVersions) { FileDelete(item); }
+                }
+            }
+
+            // save new package
             file.SaveAs(response.FullName);
 
             // validate
