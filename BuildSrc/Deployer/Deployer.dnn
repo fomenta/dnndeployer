@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="Deployer" type="Library" version="2.3.425">
+    <package name="Deployer" type="Library" version="3.0.502">
       <friendlyName>Deployer</friendlyName>
       <description>Deployer - Build DotNetNuke Integration</description>
       <iconFile>Images/icon_extensions.gif</iconFile>
@@ -13,37 +13,42 @@
       <license/>
       <releaseNotes>
         <![CDATA[<h1>Release Notes for DNN Deployer</h1>
-<h2>Version 1.0</h2>
+<h2>Version 3.0</h2>
 <ul>
-  <li>Allows modules being published via a REST web service in order to integrate with TFS Build Agent</li>
-</ul>
-
-<h2>Version 1.1.1</h2>
-<ul>
-  <li>Added a secure version of the REST web service implementation to install module (i.e. Requires Host Authentication)</li>
-</ul>
-
-<h2>Version 1.2</h2>
-<ul>
-  <li>Added a controller to import pages</li>
-</ul>
-<h2>Version 1.3</h2>
-<ul>
-  <li>Added a controller to import portals</li>
-</ul>
-<h2>Version 1.4</h2>
-<ul>
-  <li>Extended the controller to import pages</li>
-</ul>
-<h2>Version 1.5</h2>
-<ul>
-  <li>Extended the controller to modify pages, add modules to pages, remove modules from pages</li>
+  <li>Removes UnsecuredDeployerClient</li>
+  <li>Allows uploading packages to Install folder on dnn site</li>
+  <li>Allows installing packages from Install folder on dnn site</li>
+  <li>Allow checking local options such us exe file's version</li>
 </ul>
 <h2>Version 2.0</h2>
 <ul>
   <li>Allows publishing multiple modules in a single call</li>
   <li>Fixed bug when calling --patern parameter, which was conflicting with --password (both had the -p shortcut)</li>
   <li>Allow associating CodeOnTime controls to DNN pages</li>
+</ul>
+<h2>Version 1.5</h2>
+<ul>
+  <li>Extended the controller to modify pages, add modules to pages, remove modules from pages</li>
+</ul>
+<h2>Version 1.4</h2>
+<ul>
+  <li>Extended the controller to import pages</li>
+</ul>
+<h2>Version 1.3</h2>
+<ul>
+  <li>Added a controller to import portals</li>
+</ul>
+<h2>Version 1.2</h2>
+<ul>
+  <li>Added a controller to import pages</li>
+</ul>
+<h2>Version 1.1.1</h2>
+<ul>
+  <li>Added a secure version of the REST web service implementation to install module (i.e. Requires Host Authentication)</li>
+</ul>
+<h2>Version 1.0</h2>
+<ul>
+  <li>Allows modules being published via a REST web service in order to integrate with TFS Build Agent</li>
 </ul>
 ]]>
       </releaseNotes>

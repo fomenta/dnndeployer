@@ -71,12 +71,12 @@
     </Compile>
     <Compile Include="Arguments\CommonOptions.cs" />
     <Compile Include="Arguments\InstallFolderOptions.cs" />
+    <Compile Include="Arguments\LocalOptions.cs" />
     <Compile Include="Arguments\ModuleOptions.cs" />
     <Compile Include="Arguments\Options.cs" />
     <Compile Include="Arguments\PageModuleOptions.cs" />
     <Compile Include="Arguments\PageOptions.cs" />
     <Compile Include="Client\AdminBaseClient.cs" />
-    <Compile Include="Client\DeployerUnsecuredClient.cs" />
     <Compile Include="Client\InstallFolderAdminClient.cs" />
     <Compile Include="Client\ModuleAdminClient.cs" />
     <Compile Include="Client\PageAdminClient.cs" />
@@ -112,14 +112,13 @@
     <MakeDir Directories="$(OutputPath)Signed" Condition="!Exists('$(OutputPath)Signed')" />
     <Delete Files="$(ILMergeOutputFilePath)" Condition="Exists($(ILMergeOutputFilePath))" />
     <Delete Files="$(ILMergeOutputFilePathSigned)" Condition="Exists($(ILMergeOutputFilePathSigned))" />
-
     <!-- ILMerge does not yet support .NET 4.0  http://nitoprograms.blogspot.com/2010/09/using-ilmerge-with-net-40-andor-rx.html 
       /targetplatform:v4,"%ProgramFiles%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" 
     -->
     <Error Condition="!Exists('$(FrameworkPath)')" Text="Could not find 4.0 reference assemblies in $(FrameworkPath)" />
     <Exec Command="&quot;$(ILMergeExe)&quot; $(ILMergeCommandArgs)" WorkingDirectory="$(OutputPath)" />
     <!-- produce another signed one if signing assembly -->
-    <Exec Condition=" '$(SignAssembly)' == 'true' " Command='"$(ILMergeExe)" $(ILMergeCommandArgsSigned)' WorkingDirectory="$(OutputPath)" />
+    <Exec Condition=" '$(SignAssembly)' == 'true' " Command="&quot;$(ILMergeExe)&quot; $(ILMergeCommandArgsSigned)" WorkingDirectory="$(OutputPath)" />
   </Target>
   <Target Name="AfterBuild" DependsOnTargets="MergeExecutable" />
 </Project>

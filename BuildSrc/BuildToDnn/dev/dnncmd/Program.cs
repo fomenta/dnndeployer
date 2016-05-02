@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace Build.DotNetNuke.Deployer
 {
@@ -93,10 +95,13 @@ namespace Build.DotNetNuke.Deployer
             //args = AddAuthenticationArgs(@"module -i -m " + root + @"DNNSimpleArticle_00.02.01_Install.zip");
             #endregion
 
+            // local
+            args = new[] { "local", "--version" };
+
             // version
-            //args = AddAuthenticationArgs("module -v");
+            //args = AddAuthenticationArgs("module --version");
             // verify
-            //args = AddAuthenticationArgs("module -y");
+            //args = AddAuthenticationArgs("module --verify");
             // install
             //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.05_Install.zip");
             // upgrade
@@ -137,7 +142,7 @@ namespace Build.DotNetNuke.Deployer
             // ERROR: BadRequest: Invalid value: 'module'
             //args = AddAuthenticationArgs(@"installfolder --get --packagetype module");
             // install all modules in dnn install folder
-            args = AddAuthenticationArgs(@"installfolder --installresources");
+            //args = AddAuthenticationArgs(@"installfolder --installresources");
 
 
             // page portal list
@@ -257,7 +262,8 @@ namespace Build.DotNetNuke.Deployer
             return AddAuthenticationArgs(newArgs);
         }
 
-        private const string DNN_URL = "http://721.dnndev.me";
+        //private const string DNN_URL = "tripleddev.co";
+        private const string DNN_URL = "721.dnndev.me";
         private const string DNN_USERNAME = "host";
         private const string DNN_PASSWORD = "abc123$";
 
@@ -267,7 +273,7 @@ namespace Build.DotNetNuke.Deployer
 
         private static string[] AddAuthenticationArgs(List<string> newArgs)
         {
-            newArgs.InsertRange(1, new[] { "-r", DNN_URL, "--user", DNN_USERNAME, "-p", DNN_PASSWORD });
+            newArgs.InsertRange(1, new[] { "-r", DNN_URL, "--user", DNN_USERNAME, "--password", DNN_PASSWORD });
             return newArgs.ToArray();
         }
         #endregion
@@ -288,6 +294,8 @@ namespace Build.DotNetNuke.Deployer
 
             switch (invokedVerb)
             {
+                case "local":
+                    return ExecuteLocalOptions((LocalOptions)invokedVerbInstance);
                 case "module":
                     return ExecuteModuleOptions((ModuleOptions)invokedVerbInstance);
                 case "installfolder":
@@ -307,13 +315,13 @@ namespace Build.DotNetNuke.Deployer
 
             if (options.Version)
             {
-                var client = new DeployerUnsecuredClient(options.DotNetNukeRootUrl);
+                var client = new AdminBaseClient(options.DotNetNukeRootUrl);
                 var version = client.GetVersion();
                 Console.WriteLine("{0}", version);
             }
             else if (options.Verify)
             {
-                var client = new DeployerUnsecuredClient(options.DotNetNukeRootUrl);
+                var client = new AdminBaseClient(options.DotNetNukeRootUrl);
                 var success = client.IsDeployerInstalled();
                 Console.WriteLine(success);
             }
@@ -327,6 +335,19 @@ namespace Build.DotNetNuke.Deployer
 
             return true;
         }
+
+        private static int ExecuteLocalOptions(LocalOptions options)
+        {
+            if (options.Version)
+            {
+                var fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+                Console.WriteLine("{0}", fileVersion);
+            }
+            else { throw new NotImplementedException(); }
+
+            return (int)ExitCode.Success;
+        }
+
 
         private static int ExecuteModuleOptions(ModuleOptions options)
         {

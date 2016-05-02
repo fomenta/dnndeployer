@@ -9,11 +9,11 @@ namespace Build.DotNetNuke.Deployer.Client.ConsoleArguments
              HelpText = "Root URL to the DotNetNuke location where the module will be installed to.")]
         public string DotNetNukeRootUrl { get; set; }
 
-        [Option('v', "version", DefaultValue = false,
+        [Option("version", DefaultValue = false,
                     HelpText = "Displays DotNetNuke Deployer version installed on target DotNetNuke.")]
         public bool Version { get; set; }
 
-        [Option('y', "verify", DefaultValue = false,
+        [Option("verify", DefaultValue = false,
                     HelpText = "Verify if DotNetNuke Deployer is installed on target DotNetNuke.")]
         public bool Verify { get; set; }
 
@@ -24,7 +24,7 @@ namespace Build.DotNetNuke.Deployer.Client.ConsoleArguments
         [Option("user", HelpText = "DotNetNuke Authentication User name.")]
         public string UserName { get; set; }
 
-        [Option('p', "password", HelpText = "DotNetNuke Authentication User password.")]
+        [Option("password", HelpText = "DotNetNuke Authentication User password.")]
         public string Password { get; set; }
 
         [ParserState]

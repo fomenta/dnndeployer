@@ -82,7 +82,7 @@
     <Compile Include="App_Base\SampleData.cs" />
     <Compile Include="DotNetNuke\InstallFolderAdminClientTests.cs" />
     <Compile Include="DotNetNuke\ModuleAdminClientTests.cs" />
-    <None Include="DotNetNuke\Legacy\ModuleUnsecuredClientTests.cs" />
+    <Compile Include="DotNetNuke\AdminBaseClientTests.cs" />
     <Compile Include="DotNetNuke\PageModuleAdminClientTests.cs" />
     <Compile Include="DotNetNuke\PageAdminClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

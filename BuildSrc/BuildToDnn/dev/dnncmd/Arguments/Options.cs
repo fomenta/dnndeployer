@@ -6,6 +6,9 @@ namespace Build.DotNetNuke.Deployer.Client.ConsoleArguments
     // Define a class to receive parsed values
     internal class Options
     {
+        [VerbOption("local", HelpText = "Options against local exe (e.g. Check exe version).")]
+        public LocalOptions LocalVerb { get; set; }
+
         [VerbOption("module", HelpText = "Administer modules.")]
         public ModuleOptions ModuleVerb { get; set; }
 

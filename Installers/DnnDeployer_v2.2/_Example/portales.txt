@@ -1,3 +1,0 @@
-Url,PortalID,User,Password
-portal1.dnndev.me,0,host,abc123$
-portal2.dnndev.me,7,host,abc123$

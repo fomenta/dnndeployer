@@ -25,6 +25,9 @@ namespace Build.DotNetNuke.Deployer.Client
                                             (sender, certificate, chain, sslPolicyErrors) => true;
         }
 
+        public AdminBaseClient(string targetDnnRootUrl) : base() { SetupDnn(targetDnnRootUrl, null, null); }
+
+
         public AdminBaseClient(string targetDnnRootUrl, string userName, string password) : base()
         {
             SetupDnn(targetDnnRootUrl, userName, password);
@@ -32,6 +35,9 @@ namespace Build.DotNetNuke.Deployer.Client
 
         public void SetupDnn(string targetDnnRootUrl, string userName, string password)
         {
+            // add 'http://' if missing any protocol
+            if (!targetDnnRootUrl.Contains(":")) { targetDnnRootUrl = string.Format("http://{0}", targetDnnRootUrl); }
+            // remove final '/'
             if (targetDnnRootUrl.EndsWith("/")) { targetDnnRootUrl = targetDnnRootUrl.Substring(0, targetDnnRootUrl.Length - 1); }
             this.TargetDotNetNukeRootUrl = targetDnnRootUrl;
             this.UserName = userName;
