@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -25,6 +26,8 @@ namespace Build.DotNetNuke.Deployer.Client
             var request = REST_CreateRequest(REST_MODULE_INSTALL, Method.PUT, new Dictionary<string, string> { { "deleteModuleFirstIfFound", deleteModuleFirstIfFound.ToString() } });
 
             List<string> modulesToInstall = new List<string>();
+
+            if (modulesFilePath == null || modulesFilePath.Length == 0) { throw new ArgumentNullException("modulesFilePath", "You must specify at least one module");  }
 
             // check paths passed in whether a file or a folder
             foreach (var item in modulesFilePath)

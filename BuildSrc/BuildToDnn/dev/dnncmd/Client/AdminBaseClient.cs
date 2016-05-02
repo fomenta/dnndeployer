@@ -35,10 +35,6 @@ namespace Build.DotNetNuke.Deployer.Client
 
         public void SetupDnn(string targetDnnRootUrl, string userName, string password)
         {
-            // add 'http://' if missing any protocol
-            if (!targetDnnRootUrl.Contains(":")) { targetDnnRootUrl = string.Format("http://{0}", targetDnnRootUrl); }
-            // remove final '/'
-            if (targetDnnRootUrl.EndsWith("/")) { targetDnnRootUrl = targetDnnRootUrl.Substring(0, targetDnnRootUrl.Length - 1); }
             this.TargetDotNetNukeRootUrl = targetDnnRootUrl;
             this.UserName = userName;
             this.Password = password;
@@ -49,7 +45,19 @@ namespace Build.DotNetNuke.Deployer.Client
         public string UserName { get; set; }
         public string Password { get; set; }
         public string ServiceUrl { get { return string.Format(DEPLOYER_BASE_URL_STRINGFORMAT, TargetDotNetNukeRootUrl); } }
-        public string TargetDotNetNukeRootUrl { get; set; }
+        private string _TargetDotNetNukeRootUrl;
+        public string TargetDotNetNukeRootUrl
+        {
+            get { return _TargetDotNetNukeRootUrl; }
+            set
+            {
+                _TargetDotNetNukeRootUrl = value;
+                // add 'http://' if missing any protocol
+                if (!_TargetDotNetNukeRootUrl.Contains(":")) { _TargetDotNetNukeRootUrl = string.Format("http://{0}", _TargetDotNetNukeRootUrl); }
+                // remove final '/'
+                if (_TargetDotNetNukeRootUrl.EndsWith("/")) { _TargetDotNetNukeRootUrl = _TargetDotNetNukeRootUrl.Substring(0, _TargetDotNetNukeRootUrl.Length - 1); }
+            }
+        }
         public string LastRequestUrl { get; protected set; }
         public IRestResponse LastResponse { get; protected set; }
 

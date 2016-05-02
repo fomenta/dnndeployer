@@ -96,13 +96,16 @@ namespace Build.DotNetNuke.Deployer
             #endregion
 
             // local
-            args = new[] { "local", "--version" };
+            //args = new[] { "local", "--version" };
 
             // version
             //args = AddAuthenticationArgs("module --version");
             // verify
             //args = AddAuthenticationArgs("module --verify");
+
             // install
+            Environment.CurrentDirectory = @"D:\Go\Agent1\pipelines\DDD-Trunk-Deploy";
+            args = AddAuthenticationArgs("module --install --modules build");
             //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.05_Install.zip");
             // upgrade
             //args = AddAuthenticationArgs(@"module -i -m " + root + @"Blog_06.00.06_Install.zip");
@@ -262,10 +265,11 @@ namespace Build.DotNetNuke.Deployer
             return AddAuthenticationArgs(newArgs);
         }
 
-        //private const string DNN_URL = "tripleddev.co";
-        private const string DNN_URL = "721.dnndev.me";
+        private const string DNN_URL = "tripleddev.co";
+        //private const string DNN_URL = "721.dnndev.me";
         private const string DNN_USERNAME = "host";
-        private const string DNN_PASSWORD = "abc123$";
+        private const string DNN_PASSWORD = "tripled123$";
+        //private const string DNN_PASSWORD = "abc123$";
 
         //private const string DNN_URL = "http://puertobahia-test-staging.azurewebsites.net";
         //private const string DNN_USERNAME = "pescobar";
