@@ -49,8 +49,10 @@ namespace Build.DotNetNuke.Deployer
         {
             if (args != null && args.Length > 0) { return; }
 
+            //string testingFolder = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\BuildToDnn\test\Client\App_Data\SampleModules\";
+
+            
             // install 2 modules (upgrading one)
-            string testingFolder = @"C:\Users\PEscobar\Documents\GitHub\dnndeployer\BuildSrc\BuildToDnn\test\Client\App_Data\SampleModules\";
             //args = AddAuthenticationArgs(@"module -i -m " +
             //            testingFolder + @"Blog_06.00.06_Install.zip " +
             //            testingFolder + @"UsersExportImport_v.01.01.01.zip");

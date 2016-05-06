@@ -25,6 +25,15 @@ namespace Build.DotNetNuke.Deployer.Services
     /// </summary>
     public class AdminBaseController : DnnApiController
     {
+        #region Constructor
+        protected string InstallFolder { get; private set; }
+
+        public AdminBaseController()
+        {
+            InstallFolder = Path.Combine(Globals.ApplicationMapPath, "Install");
+        }
+        #endregion
+
         #region REST verbs
         /// <summary>
         /// Default verb for controller
@@ -122,8 +131,8 @@ namespace Build.DotNetNuke.Deployer.Services
             }
 
             //Get current Script time-out
-            int scriptTimeout = context.Server.ScriptTimeout;
-            bool callSuccess = true;
+            var scriptTimeout = context.Server.ScriptTimeout;
+            var callSuccess = true;
             try
             {
                 //Set Script timeout to MAX value

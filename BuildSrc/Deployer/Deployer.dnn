@@ -61,7 +61,7 @@
           <resourceFiles>
             <basePath></basePath>
             <resourceFile>
-              <name>Resources.zip</name>
+              <name>Resources_Deployer.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>

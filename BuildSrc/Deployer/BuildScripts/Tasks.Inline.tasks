@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  ============================================================
+  RegexTransform
+ 
+  Transforms the input Items parameter by evaluating the
+  regular expression in their Find metadata and
+  replacing with their ReplaceWith metadata. Optional, the
+  options for the regular expression evaluation can be specified.
+ 
+  .EXAMPLE
+          <AssemblyInfos Include="$(BuildRoot)Src\GlobalAssemblyInfo.cs">
+              <Find>AssemblyFileVersion\(".*?"\)</Find>
+              <ReplaceWith>AssemblyFileVersion("$(FileVersion)")</ReplaceWith>
+              <Options>Multiline | IgnorePatternWhitespace</Options>
+          </AssemblyInfos>
+ 
+  Invoking the target:
+      <RegexTransform Items="@(AssemblyInfos)" />
+    
+  .EXAMPLE
+    <ItemGroup>
+        <NuSpecFiles Include="$(BuildRoot)**\*.nuspec"
+                        Condition="'$(ReleaseNotes)' != ''">
+            <Find><![CDATA[<releaseNotes />|<releaseNotes/>|<releaseNotes>.*</releaseNotes>]]></Find>
+            <ReplaceWith><![CDATA[<releaseNotes>$(ReleaseNotes)</releaseNotes>]]></ReplaceWith>
+            <Options>Singleline</Options>
+        </NuSpecFiles>
+    </ItemGroup>
+ 
+    <RegexTransform Items="@(NuSpecFiles)" />
+  
+  .EXAMPLE
+      <ItemGroup>
+      <DnnToUpdateVersion Include="$(SampleDnnFile)">
+        <Find>version="([^"]+)"</Find>
+        <ReplaceWith>version="$(DnnTargetVersion)"</ReplaceWith>
+        <Options>Multiline | IgnorePatternWhitespace</Options>
+      </DnnToUpdateVersion>
+    </ItemGroup>
+
+    <RegexTransform Items="@(DnnToUpdateVersion)" MessageWithFormat="Updated [{1}] in '{0}'" />
+
+  ============================================================
+  -->
+  <UsingTask TaskName="RegexTransform" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Items ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+      <MessageWithFormat ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Using Namespace="Microsoft.Build.Framework" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+         foreach(var item in Items)
+         {
+           string fileName = item.GetMetadata("FullPath");
+           string find = item.GetMetadata("Find");
+           string replaceWith = item.GetMetadata("ReplaceWith");
+           string optionsValue = item.GetMetadata("Options") ?? "";
+ 
+           var options = string.IsNullOrWhiteSpace(optionsValue) ?
+               RegexOptions.None : (RegexOptions)Enum.Parse(typeof(RegexOptions), optionsValue.Replace('|', ','));
+ 
+           if(!File.Exists(fileName))
+           {
+             Log.LogError("Could not find file: {0}", fileName);
+             return false;
+           }
+         
+           if (!string.IsNullOrEmpty(MessageWithFormat)) {
+              Log.LogMessage(MessageWithFormat, fileName, replaceWith);
+           }
+         
+           var fi = new FileInfo(fileName);
+           if (fi.IsReadOnly) { fi.IsReadOnly = false; }
+         
+           string content = File.ReadAllText(fileName);
+           File.WriteAllText(
+             fileName,
+             Regex.Replace(content, find, replaceWith, options));
+         }
+     ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <UsingTask TaskName="GetFileVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Result ParameterType="System.String" Output="true" />
+      <AssemblyLocation ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Diagnostics" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        Result = FileVersionInfo.GetVersionInfo(Path.GetFullPath(AssemblyLocation)).ProductVersion.Trim();
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <UsingTask TaskName="GetFileVersionFromAssemblyInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Result ParameterType="System.String" Output="true" />
+      <ProjectDir ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Diagnostics" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        var infoFile = Path.Combine(ProjectDir, @"Properties\AssemblyInfo.cs");
+        if (!File.Exists(infoFile)) { Log.Error("Cannot find file '{0}'", infoFile); }
+        
+        var fileVersionPattern = '(\n\r*[\s\t]*\[assembly\: )(AssemblyFileVersion\("[^"]+"\))';
+	      var infoFileContents = File.ReadAllText(infoFile);
+    	  
+        Result = Regex.Match(infoFileContents, fileVersionPattern).Groups[2].Value;
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <UsingTask TaskName="ResolveDnnPackageVersion" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Result ParameterType="System.String" Output="true" />
+      <AssemblyLocation ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Diagnostics" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        var ver = Version.Parse(FileVersionInfo.GetVersionInfo(Path.GetFullPath(AssemblyLocation)).ProductVersion.Trim());
+        Result = string.Format("{0:00}.{1:00}.{2:00}", ver.Major, ver.Minor, ver.Build < 0 ? 0 : ver.Build);
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+
+  <!--
+  msbuild /t:IncrementVersionRevision
+  -->
+  <Target Name="IncrementVersionRevision" Condition=" '$(GO_REVISION)' != '' ">
+    <GetFileVersionFromAssemblyInfo ProjectDir="$(ProjectDir)">
+      <Output PropertyName="FileVersion" TaskParameter="Result" />
+    </GetFileVersionFromAssemblyInfo>
+    <Message Text="FileVersion: '$(FileVersion)'" Importance="High" />
+
+  </Target>
+  
+  <Target Name="UpdateVersion_On_DnnManifestTargetPath">
+    <ItemGroup>
+      <DnnToUpdateVersion Include="$(DnnManifestTargetPath)">
+        <Find>version="([^"]+)"</Find>
+        <ReplaceWith>version="$(DnnTargetVersion)"</ReplaceWith>
+        <Options>Multiline | IgnorePatternWhitespace</Options>
+      </DnnToUpdateVersion>
+    </ItemGroup>
+    <RegexTransform Items="@(DnnToUpdateVersion)" MessageWithFormat="Updated [{1}] in '{0}'" />
+  </Target>
+
+
+  <Target Name="DnnTargetVersion_From_FileToReadVersion">
+    <Message Text="FileToReadVersion: '$(FileToReadVersion)'" Importance="Low" />
+    <ResolveDnnPackageVersion AssemblyLocation="$(FileToReadVersion)">
+      <Output PropertyName="DnnTargetVersion" TaskParameter="Result" />
+    </ResolveDnnPackageVersion>
+    <Message Text="DnnTargetVersion: '$(DnnTargetVersion)'" Importance="High" />
+  </Target>
+
+</Project>

@@ -276,7 +276,7 @@ namespace Build.Extensions.Tests.DotNetNuke
         [TestMethod]
         public void Page_4_1_3_Delete_Any()
         {
-            const string DNN_URL = "http://dnndev.me";
+            //const string DNN_URL = "http://dnndev.me";
             //var deleted = client.PageDelete(tabFullName: "Clubes", deleteDescendants: true);
             var deleted = client.PageDelete(new PageGetRequest(tabPath: "//Clubes"), deleteDescendants: true);
             CheckAndDisplayResponse(client);
@@ -287,7 +287,7 @@ namespace Build.Extensions.Tests.DotNetNuke
         [TestMethod]
         public void Page_4_2_0_Delete_Reportes()
         {
-            const string DNN_URL = "http://dnndev.me/reporteador";
+            //const string DNN_URL = "http://dnndev.me/reporteador";
             const string START_PAGE_PATH = "Clubes";
 
             var dictPages = client.PageListToDictionary("dnndev.me/reporteador");

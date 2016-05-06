@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- WARNING, WARNING, WARNING -->
-<!-- REMEMBER THAT IF YOU MODIFY THE TARGETS FILE YOU NEED TO CLOSE/OPEN THE PROJECT FOR THE CHANGES TO TAKE EFFECT -->
-
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="MSBuild.Community.Tasks.Targets" />
-  <Target Name="PackageLibrary" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <XmlRead Prefix="n"
-                    Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
-                    XPath="dotnetnuke/packages/package[1]/@version"
-                    XmlFileName="$(ProjectName).dnn">
-      <Output TaskParameter="Value" PropertyName="Version" />
-    </XmlRead>
+  <Import Project="Tasks.Inline.tasks" />
 
-    <!--in VS 2012 we exclude the packages folder -->
-    <ItemGroup>     
+  <Target Name="PackageLibrary" DependsOnTargets="SetProperties1;DnnTargetVersion_From_FileToReadVersion;SetProperties2"  Condition=" '$(Configuration)' == 'Release' ">
+    <Error Text="[PackageLibrary] DEBUG: No se encuentra el archivo de Manifiesto '$(ProjectName).dnn'" Condition="!Exists('$(ProjectName).dnn')" />
+
+    <CallTarget Targets="DnnCleanOutput1" />
+
+    <CallTarget Targets="DnnPack" />
+
+    <CallTarget Targets="DnnCleanOutput2" />
+  </Target>
+
+  <Target Name="SetProperties1">
+    <PropertyGroup>
+      <FileToReadVersion>$(TargetPath)</FileToReadVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="SetProperties2">
+    <PropertyGroup>
+      <DnnPackageTargetDir>$(MSBuildProjectDirectory)\obj\Package</DnnPackageTargetDir>
+      <DnnPackageTargetPath>$(MSBuildProjectDirectory)\obj\$(ProjectName)_$(DnnTargetVersion)_Install.zip</DnnPackageTargetPath>
+      <DnnResourcesZipTargetDir>$(MSBuildProjectDirectory)\obj\ResourcesZip</DnnResourcesZipTargetDir>
+
+      <DnnManifestTargetPath>$(DnnPackageTargetDir)\$(ProjectName).dnn</DnnManifestTargetPath>
+      <DnnResourceZipTargetPath>$(DnnPackageTargetDir)\Resources_$(ProjectName).zip</DnnResourceZipTargetPath>
+    </PropertyGroup>
+  </Target>
+
+  <!--por defecto, cada Target es llamado una sola vez-->
+  <Target Name="DnnCleanOutput1">
+    <RemoveDir Directories="$(DnnPackageTargetDir)" />
+    <RemoveDir Directories="$(DnnResourcesZipTargetDir)" />
+  </Target>
+  <Target Name="DnnCleanOutput2">
+    <RemoveDir Directories="$(DnnPackageTargetDir)" />
+    <RemoveDir Directories="$(DnnResourcesZipTargetDir)" />
+  </Target>
+
+
+  <Target Name="DnnCollectFilesToInclude">
+    <ItemGroup>
       <InstallInclude Include="**\*.ascx" Exclude="packages\**" />
       <InstallInclude Include="**\*.asmx" Exclude="packages\**" />
       <InstallInclude Include="**\*.css" Exclude="packages\**" />
@@ -27,7 +56,7 @@
       <InstallInclude Include="**\images\**" Exclude="packages\**" />
     </ItemGroup>
 
-    
+
     <CreateItem Include="$(ProjectName).dnn">
       <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
     </CreateItem>
@@ -44,29 +73,30 @@
     <CreateItem Include="**\*.sqldataprovider">
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
+  </Target>
 
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\obj\Package\bin"/>
-    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\obj\Package\%(RecursiveDir)" />
-    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\obj\Package" />
-    <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\obj\Package" />
+  <Target Name="DnnPack" DependsOnTargets="DnnCollectFilesToInclude">
+    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(DnnPackageTargetDir)" />
+    <CallTarget Targets="UpdateVersion_On_DnnManifestTargetPath" />
 
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(DnnPackageTargetDir)\bin"/>
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(DnnPackageTargetDir)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(DnnPackageTargetDir)" />
+    <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(DnnResourcesZipTargetDir)\%(RecursiveDir)" />
 
-    <!-- create the INSTALL RESOURCES.ZIP file -->
-    <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\obj\ResourcesZip\%(RecursiveDir)" />
-
-    <CreateItem Include="$(MSBuildProjectDirectory)\obj\ResourcesZip\**\*.*">
+    <!--zip resources-->
+    <CreateItem Include="$(DnnResourcesZipTargetDir)\**\*.*">
       <Output TaskParameter="Include" ItemName="ResourcesContent" />
     </CreateItem>
-    
-    <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\obj\ResourcesZip" ZipFileName="obj\Package\Resources.zip" />
+    <Zip Files="@(ResourcesContent)" WorkingDirectory="$(DnnResourcesZipTargetDir)" ZipFileName="$(DnnResourceZipTargetPath)" />
 
-    <CreateItem Include="$(MSBuildProjectDirectory)\obj\Package\**\*.*">
+    <!-- Create the Install package -->
+    <CreateItem Include="$(DnnPackageTargetDir)\**\*.*">
       <Output TaskParameter="Include" ItemName="OutputContent" />
     </CreateItem>
-     <!--Create the Install package-->     
-    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\obj\Package" ZipFileName="obj\$(ProjectName)_$(Version)_Install.zip" />
-    
-    <RemoveDir Directories ="$(MSBuildProjectDirectory)\obj\Package" />
-    <RemoveDir Directories ="$(MSBuildProjectDirectory)\obj\ResourcesZip" />
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(DnnPackageTargetDir)" ZipFileName="$(DnnPackageTargetPath)" />
+
+    <Message Text="DEBUG: [DnnPack] DNN Package: $(DnnPackageTargetPath)" Importance="High" />
   </Target>
+
 </Project>

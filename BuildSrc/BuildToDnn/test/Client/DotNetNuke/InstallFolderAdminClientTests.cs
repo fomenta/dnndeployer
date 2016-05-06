@@ -1,6 +1,8 @@
 ﻿using Build.DotNetNuke.Deployer.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.IO;
 using System.Web.Script.Serialization;
 
 namespace Build.Extensions.Tests.DotNetNuke
@@ -12,7 +14,8 @@ namespace Build.Extensions.Tests.DotNetNuke
         public void InstallFolder_1_1_Get()
         {
             var list = client.Get();
-            TestContext.WriteLine("list: {0}", list);
+            TestContext.WriteLine("[Modules]");
+            TestContext.WriteLine("{0}", list);
 
             // display some data
             CheckAndDisplayResponse(client);
@@ -22,8 +25,6 @@ namespace Build.Extensions.Tests.DotNetNuke
         public void InstallFolder_1_1_2_Get_ResponseParse_2()
         {
             var response = @"[
-]";
-            var response2 = @"[
   ""Module\\DNNSimpleArticle_00.02.01_Install.zip"",
   ""Module\\UsersExportImport_v.01.01.01.zip""
 ]";
@@ -50,6 +51,22 @@ namespace Build.Extensions.Tests.DotNetNuke
         }
 
         [TestMethod]
+        public void InstallFolder_1_1_4_GetFiles()
+        {
+            var installFolder = @"C:\inetpub\dnn734\Install";
+            var packageName = "*";
+
+            var files = new List<string>();
+            files.AddRange(Directory.GetFiles(installFolder, "*" + packageName + "*.zip", SearchOption.AllDirectories));
+            files.AddRange(Directory.GetFiles(installFolder, "*" + packageName + "*.resources", SearchOption.AllDirectories));
+
+            foreach (var file in files)
+            {
+                TestContext.WriteLine("File: '{0}'", file.Replace(installFolder + @"\", ""));
+            }
+        }
+
+        [TestMethod]
         public void InstallFolder_1_2_Count()
         {
             var count = client.Count();
@@ -70,6 +87,8 @@ namespace Build.Extensions.Tests.DotNetNuke
         [TestMethod]
         public void InstallFolder_1_4_InstallResources()
         {
+            client.Clear();
+            var uploaded = client.Save(SampleData.ModulePathBlogUpgrade);
             client.InstallResources();
             CheckAndDisplayResponse(client);
         }

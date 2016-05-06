@@ -11,8 +11,8 @@ using System.Runtime.InteropServices;
 
 // Version information for an assembly consists of the following four values:
 //      Major Version
-//      Minor Version
-//      Build Number: Mdd
-//      Revision: YY[Rev]
+//      Minor Version: Mdd
+//      Build Number: [Rev]
+//      Revision: 0
 [assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.502.165")]
+[assembly: AssemblyFileVersion("3.3.506.0")]
