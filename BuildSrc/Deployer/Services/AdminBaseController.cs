@@ -294,6 +294,11 @@ namespace Build.DotNetNuke.Deployer.Services
                 File.Delete(fullName);
             }
         }
+        protected string GetModuleSubfolderName(string packageType)
+        {
+            // [2016-05-23] folder name differs from package type
+            return packageType == "Auth_System" ? "AuthSystem" : packageType;
+        }
         #endregion
 
         #region return Response*
@@ -313,12 +318,12 @@ namespace Build.DotNetNuke.Deployer.Services
             var response = new UploadResponse();
 
             response.PackageType = PackageTypes.Module;    // default location
-            response.InstallDir = Path.Combine(Globals.ApplicationMapPath, "Install", response.PackageType);
+            response.InstallDir = Path.Combine(Globals.ApplicationMapPath, "Install", GetModuleSubfolderName(response.PackageType));
             if (!Directory.Exists(response.InstallDir)) { Directory.CreateDirectory(response.InstallDir); }
 
             if (file == null) { return null; }
             var fileName = Path.GetFileName(file.FileName);
-            const string PATTERN_BASE_FILENAME= @"^(.+)_(\d+\.\d+\.\d+).*$";
+            const string PATTERN_BASE_FILENAME = @"^(.+)_(\d+\.\d+\.\d+).*$";
             var baseFile = Regex.Replace(fileName, PATTERN_BASE_FILENAME, "$1");
             if (string.IsNullOrEmpty(baseFile)) { baseFile = Path.GetFileNameWithoutExtension(fileName); }
 
@@ -359,10 +364,17 @@ namespace Build.DotNetNuke.Deployer.Services
             if (response.PackageType != newPackageType)
             {
                 response.PackageType = newPackageType;
-                var newInstallPath = Path.Combine(Globals.ApplicationMapPath, "Install", newPackageType);
+                var newInstallPath = Path.Combine(Globals.ApplicationMapPath, "Install", GetModuleSubfolderName(newPackageType));
                 if (!Directory.Exists(newInstallPath)) { Directory.CreateDirectory(newInstallPath); }
 
                 var newFullPath = Path.Combine(newInstallPath, fileName);
+
+                var targetFileInfo = new System.IO.FileInfo(newFullPath);
+                if (targetFileInfo.Exists)
+                {
+                    if (targetFileInfo.IsReadOnly) { targetFileInfo.IsReadOnly = false; }
+                    File.Delete(newFullPath);
+                }
 
                 File.Move(response.FullName, newFullPath);
 

@@ -154,7 +154,7 @@ namespace Build.DotNetNuke.Deployer.Services
             {
                 installSubfolders = null;
                 if (PackageTypes.IsInvalid(packageType)) { return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentOutOfRangeException("packageType", string.Format("Invalid value: '{0}'", packageType))); }
-                installSubfolders = new[] { Path.Combine(InstallFolder, packageType) };
+                installSubfolders = new[] { Path.Combine(InstallFolder, GetModuleSubfolderName(packageType)) };
             }
             else
             {
@@ -162,7 +162,6 @@ namespace Build.DotNetNuke.Deployer.Services
             }
             return null;
         }
-
 
         private List<string> GetFiles(out HttpResponseMessage response, string packageType, params string[] packageNames)
         {

@@ -7,7 +7,7 @@
     <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/choco/wiki/CreatePackages -->
     <id>dnncmd</id>
     <title>dnncmd</title>
-    <version>3.3.506.0</version>
+    <version>3.7.523.0</version>
     <authors>Pablo Escobar</authors>
     <owners>Fomenta SAS</owners>
     <summary>DotNetNuke Command-Line Utility</summary>
